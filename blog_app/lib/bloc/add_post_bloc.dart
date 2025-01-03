@@ -139,7 +139,7 @@ class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
       }
 
       emit(AddPostLoadingState());
-      
+
       print("xxxxxxxxxxxxxxxxxxxxx");
       print(event.originalContent);
 

@@ -32,7 +32,7 @@ class DiscoverScreen extends StatelessWidget {
           'Discover',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color(0xFF2A92C9),
+        backgroundColor: const Color.fromARGB(255, 33, 137, 156),
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(10),
@@ -133,13 +133,11 @@ class DiscoverScreen extends StatelessWidget {
                 // Save Button
                 BlocBuilder<SavedBlogBloc, SavedBlogState>(
                   builder: (context, state) {
-                    bool isSaved = state.savedBlogs
-                        .any((savedBlog) => savedBlog['title'] == blog['title']);
+                    bool isSaved = state.savedBlogs.any(
+                        (savedBlog) => savedBlog['title'] == blog['title']);
                     return IconButton(
                       icon: Icon(
-                        isSaved
-                            ? Icons.bookmark
-                            : Icons.bookmark_border,
+                        isSaved ? Icons.bookmark : Icons.bookmark_border,
                         color: isSaved ? Colors.blue : Colors.grey,
                       ),
                       onPressed: () {

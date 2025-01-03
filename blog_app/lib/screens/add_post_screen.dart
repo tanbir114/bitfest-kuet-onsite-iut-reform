@@ -15,7 +15,7 @@ class AddPostScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Post'),
-        backgroundColor: const Color(0xFF2A92C9),
+        backgroundColor: const Color.fromARGB(255, 33, 137, 156),
       ),
       body: BlocConsumer<AddPostBloc, AddPostState>(
         listener: (context, state) {
@@ -80,10 +80,11 @@ class AddPostScreen extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         final content = _controller.document.toPlainText();
-                        final tags = 'tag1, tag2'; // Replace with actual tag input
+                        final tags =
+                            'tag1, tag2'; // Replace with actual tag input
                         final author =
                             "6777cd02a35610db18ae569b"; // Replace with actual author ID
-                    
+
                         if (state is AddPostLoadedState) {
                           final postId = state.eventId;
                           if (postId != null) {
@@ -95,8 +96,10 @@ class AddPostScreen extends StatelessWidget {
                                   title: _titleController
                                       .text, // Use the title from the controller
                                   originalContent: originalContent,
-                                  tags:
-                                      tags.split(',').map((e) => e.trim()).toList(),
+                                  tags: tags
+                                      .split(',')
+                                      .map((e) => e.trim())
+                                      .toList(),
                                   author: author,
                                   generatedContent: generatedContent.isNotEmpty
                                       ? generatedContent
@@ -113,15 +116,19 @@ class AddPostScreen extends StatelessWidget {
                                 title: _titleController
                                     .text, // Use the title from the controller
                                 content: content,
-                                tags: tags.split(',').map((e) => e.trim()).toList(),
+                                tags: tags
+                                    .split(',')
+                                    .map((e) => e.trim())
+                                    .toList(),
                                 author: author,
                               ));
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            Color(0xFF2A92C9), // Set background color to blue
-                        foregroundColor: Colors.white, // Set text color to white
+                        backgroundColor: Color.fromARGB(
+                            255, 33, 137, 156), // Set background color to blue
+                        foregroundColor:
+                            Colors.white, // Set text color to white
                         padding: const EdgeInsets.symmetric(
                             horizontal: 24.0, vertical: 12.0),
                         textStyle: const TextStyle(
@@ -134,7 +141,7 @@ class AddPostScreen extends StatelessWidget {
                       child: const Text('Submit'),
                     ),
                   ),
-            
+
                   // Only show original content if generated content is available
                   if (generatedContent.isNotEmpty) ...[
                     // Title field, filled with the title from the state
