@@ -1,4 +1,5 @@
 import 'package:blog_app/screens/add_post_screen.dart';
+import 'package:blog_app/screens/chat_screen.dart';
 import 'package:blog_app/screens/contribute_screen.dart';
 import 'package:blog_app/screens/home_content.dart';
 import 'package:flutter/material.dart';
@@ -63,6 +64,20 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedItemColor: const Color.fromARGB(255, 33, 137, 156),
         unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Navigate to the ChatPage (AI Chat screen)
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ChatPage()),
+          );
+        }, // Chat icon for AI chat
+        backgroundColor: const Color.fromARGB(255, 33, 137, 156),
+        child: const Icon(
+          Icons.chat_bubble,
+          color: Colors.white,
+        ), // Color for the button
       ),
     );
   }

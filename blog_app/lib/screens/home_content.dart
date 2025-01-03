@@ -188,7 +188,7 @@ class _HomeContentState extends State<HomeContent> {
         ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: recommendedNews.length,
+          itemCount: recommendedNews.length > 5 ? 5 : recommendedNews.length,
           itemBuilder: (context, index) {
             final news = recommendedNews[index];
             return Column(

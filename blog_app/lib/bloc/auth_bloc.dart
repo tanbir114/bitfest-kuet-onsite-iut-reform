@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Events
 abstract class AuthEvent {}
@@ -31,8 +32,9 @@ class AuthLoading extends AuthState {}
 
 class AuthAuthenticated extends AuthState {
   final String token;
+  final Map<String, dynamic> user;
 
-  AuthAuthenticated(this.token);
+  AuthAuthenticated(this.token, this.user);
 }
 
 class AuthUnauthenticated extends AuthState {
@@ -60,8 +62,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         if (response.statusCode == 200) {
           final data = jsonDecode(response.body);
           final token = data['data']['accessToken'];
-          
-          emit(AuthAuthenticated(token));
+          final user = data['data']['loggedInUser'];
+
+          // Save token using SharedPreferences
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString('jwt_token', token);
+
+          // Save user data (if needed)
+          await prefs.setString('user_data', jsonEncode(user));
+
+          emit(AuthAuthenticated(token, user));
         } else {
           emit(AuthUnauthenticated(
               message: 'Login failed. Please check your credentials.'));
@@ -101,7 +111,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     // Handle logout event
-    on<AuthLogout>((event, emit) {
+    on<AuthLogout>((event, emit) async {
+      // Clear token from SharedPreferences
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('jwt_token');
+      await prefs.remove('user_data');
+
       emit(AuthUnauthenticated());
     });
   }

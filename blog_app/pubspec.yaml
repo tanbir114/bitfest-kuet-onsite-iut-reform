@@ -42,6 +42,7 @@ dependencies:
   flutter_quill: ^10.8.5
   flutter_svg: ^2.0.16
   google_fonts: ^6.2.1
+  intl:
 
 dev_dependencies:
   flutter_test:
