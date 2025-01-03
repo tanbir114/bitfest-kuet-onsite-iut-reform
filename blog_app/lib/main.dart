@@ -6,7 +6,6 @@ import 'bloc/auth_bloc.dart';
 import 'bloc/saved_blog_bloc.dart';
 import 'screens/add_post_screen.dart';
 import 'screens/login_screen.dart';
-import 'screens/add_post_screen.dart';
 import 'screens/signup_screen.dart'; // Import AddPostScreen
 
 void main() {
