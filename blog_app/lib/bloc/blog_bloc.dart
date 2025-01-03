@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:http/http.dart' as http; // Importing http package
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart'; // Importing http package
 
 abstract class BlogEvent extends Equatable {
   @override
@@ -46,14 +47,26 @@ class BlogError extends BlogState {
   List<Object?> get props => [message];
 }
 
+Future<http.Response> fetchProtectedResource() async {
+  final prefs = await SharedPreferences.getInstance();
+  final token = prefs.getString('jwt_token') ?? '';
+
+  return await http.get(
+    Uri.parse('http://192.168.14.49:5001/api/story'),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    },
+  );
+}
+
 class BlogBloc extends Bloc<BlogEvent, BlogState> {
   BlogBloc() : super(BlogInitial()) {
     on<LoadBlogsEvent>((event, emit) async {
       emit(BlogLoading());
       try {
         // Fetch blogs from API
-        final response =
-            await http.get(Uri.parse('http://192.168.14.49:5001/api/story'));
+        final response = await fetchProtectedResource();
 
         print(response.statusCode);
 

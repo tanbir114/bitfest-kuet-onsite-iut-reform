@@ -49,7 +49,7 @@ class _HomeContentState extends State<HomeContent> {
         appBar: AppBar(
           title:
               const Text('Kotha Britto', style: TextStyle(color: Colors.white)),
-          backgroundColor: const Color(0xFF2A92C9),
+          backgroundColor: const Color.fromARGB(255, 33, 137, 156),
         ),
         body: trendingNews.isEmpty || recommendedNews.isEmpty
             ? const Center(child: CircularProgressIndicator())
@@ -68,8 +68,8 @@ class _HomeContentState extends State<HomeContent> {
                           fillColor: Colors.white,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30),
-                            borderSide:
-                                const BorderSide(color: Color(0xFF2A92C9)),
+                            borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 33, 137, 156)),
                           ),
                         ),
                         onChanged: (value) {
@@ -107,7 +107,8 @@ class _HomeContentState extends State<HomeContent> {
                                   count: trendingNews.length,
                                   effect: const WormEffect(
                                     dotColor: Colors.white,
-                                    activeDotColor: Color(0xFF2A92C9),
+                                    activeDotColor:
+                                        Color.fromARGB(255, 33, 137, 156),
                                     radius: 4,
                                     dotHeight: 8,
                                     dotWidth: 8,
@@ -130,7 +131,7 @@ class _HomeContentState extends State<HomeContent> {
 
   Widget _buildTrendingCard(String title, String articles, String reads) {
     return Card(
-      color: const Color(0xFF2A92C9),
+      color: const Color.fromARGB(255, 33, 137, 156),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -178,7 +179,7 @@ class _HomeContentState extends State<HomeContent> {
                 // Navigate to See More
               },
               style: TextButton.styleFrom(
-                  foregroundColor: const Color(0xFF2A92C9)),
+                  foregroundColor: Color.fromARGB(255, 33, 137, 156)),
               child: const Text('See More'),
             ),
           ],
@@ -187,7 +188,7 @@ class _HomeContentState extends State<HomeContent> {
         ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: recommendedNews.length,
+          itemCount: recommendedNews.length > 5 ? 5 : recommendedNews.length,
           itemBuilder: (context, index) {
             final news = recommendedNews[index];
             return Column(
@@ -214,7 +215,7 @@ class _HomeContentState extends State<HomeContent> {
         width: 50,
         height: 50,
         decoration: BoxDecoration(
-          color: const Color(0xFF2A92C9),
+          color: Color.fromARGB(255, 33, 137, 156),
           borderRadius: BorderRadius.circular(8),
         ),
         child: const Icon(Icons.article, size: 30, color: Colors.white),
@@ -224,7 +225,7 @@ class _HomeContentState extends State<HomeContent> {
         style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF2A92C9)),
+            color: Color.fromARGB(255, 33, 137, 156)),
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
       ),

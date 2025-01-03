@@ -1,5 +1,6 @@
 import 'package:blog_app/screens/add_post_screen.dart';
 import 'package:blog_app/screens/chat_screen.dart';
+import 'package:blog_app/screens/contribute_screen.dart';
 import 'package:blog_app/screens/home_content.dart';
 import 'package:flutter/material.dart';
 import 'discover_screen.dart';
@@ -20,11 +21,15 @@ class _HomeScreenState extends State<HomeScreen> {
     DiscoverScreen(),
     const SavedScreen(),
     const AddPostScreen(),
+    const ContributeScreen(),
   ];
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      // Ensure the index is within range
+      if (index >= 0 && index < _pages.length) {
+        _selectedIndex = index;
+      }
     });
   }
 
@@ -50,9 +55,13 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.add_box),
             label: 'New Post',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.lightbulb),
+            label: 'Contribute',
+          ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: const Color(0xFF2A92C9),
+        selectedItemColor: const Color.fromARGB(255, 33, 137, 156),
         unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
       ),
@@ -63,9 +72,12 @@ class _HomeScreenState extends State<HomeScreen> {
             context,
             MaterialPageRoute(builder: (context) => ChatPage()),
           );
-        },
-        child: Icon(Icons.chat_bubble), // Chat icon for AI chat
-        backgroundColor: Colors.blueAccent, // Color for the button
+        }, // Chat icon for AI chat
+        backgroundColor: const Color.fromARGB(255, 33, 137, 156),
+        child: const Icon(
+          Icons.chat_bubble,
+          color: Colors.white,
+        ), // Color for the button
       ),
     );
   }

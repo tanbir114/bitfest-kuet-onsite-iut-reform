@@ -29,7 +29,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
           'Discover',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color(0xFF2A92C9),
+        backgroundColor: const Color.fromARGB(255, 33, 137, 156),
       ),
       body: BlocBuilder<BlogBloc, BlogState>(
         builder: (context, state) {

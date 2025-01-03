@@ -1,5 +1,6 @@
 import 'package:blog_app/bloc/blog_bloc.dart';
 import 'package:blog_app/bloc/upvote_bloc.dart';
+import 'package:blog_app/screens/contribute_screen.dart';
 import 'package:blog_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +9,7 @@ import 'bloc/auth_bloc.dart';
 import 'bloc/saved_blog_bloc.dart';
 import 'screens/add_post_screen.dart';
 import 'screens/login_screen.dart';
+
 import 'screens/signup_screen.dart'; // Import AddPostScreen
 
 void main() {
@@ -52,7 +54,9 @@ class MyApp extends StatelessWidget {
               ),
           '/signup': (context) => const SignUpScreen(),
           '/home': (context) => const HomeScreen(),
-          '/addPost': (context) => const AddPostScreen(), // AddPostScreen route
+          '/addPost': (context) => const AddPostScreen(),
+          '/contribute': (context) =>
+              const ContributeScreen(), // AddPostScreen route
         },
       ),
     );

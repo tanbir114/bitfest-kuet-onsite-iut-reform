@@ -13,10 +13,8 @@ class _ChatPageState extends State<ChatPage> {
   final TextEditingController _messageController = TextEditingController();
 
   bool _isListening = false;
-  bool _speechEnabled = false;
   bool _isLoading = false; // Add loading state
   List<Map<String, String>> _messages = [];
-  String _lastWords = '';
 
   ScrollController _scrollController = ScrollController();
 
@@ -135,8 +133,8 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _buildLoadingIndicator() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: 10),
       child: Center(
         child: Text(
           '... Loading ...',
