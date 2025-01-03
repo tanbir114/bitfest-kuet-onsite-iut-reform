@@ -41,7 +41,23 @@ const createFinalStoryUpdate = catchAsync(async (req, res) => {
     });
 });
 
+const createCollection = catchAsync(async (req, res) => {
+    await StoryService.createCollection();
+
+    console.log(
+        '[LOG : story.controller > createCollection] Collection created successfully',
+    );
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Collection created successfully',
+        data: null,
+    });
+});
+
 export const StoryController = {
     createInitialStory,
     createFinalStoryUpdate,
+    createCollection,
 };
