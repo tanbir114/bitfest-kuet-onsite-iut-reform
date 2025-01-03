@@ -1,6 +1,6 @@
 import { banglishModel } from '../../utils/llmModels';
 import { VectorDatabase } from '../../utils/vectorDatabase';
-import { getTemplate } from './story.constant';
+import { getTemplate, getTitleTemplate } from './story.constant';
 import { TStory } from './story.interface';
 import { StoryModel } from './story.model';
 
@@ -28,7 +28,18 @@ const createInitialStoryIntoDB = async (story: TStory) => {
         banglishResponse.content,
     );
 
-    return { newStory, generatedContent: banglishResponse.content };
+    const titleTemplate = getTitleTemplate();
+
+    const titleResponse = await banglishModel.invoke([
+        titleTemplate,
+        newStory.originalContent,
+    ]);
+
+    return {
+        newStory,
+        generatedContent: banglishResponse.content,
+        title: titleResponse.content,
+    };
 };
 
 const createFinalStoryUpdateIntoDB = async (story: TStory, storyId: string) => {
