@@ -1,3 +1,4 @@
+import 'package:blog_app/bloc/blog_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart';
@@ -14,7 +15,10 @@ class AddPostScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Post'),
+        title: const Text(
+          'Add Post',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: const Color(0xFF2A92C9),
       ),
       body: BlocConsumer<AddPostBloc, AddPostState>(
@@ -106,13 +110,21 @@ class AddPostScreen extends StatelessWidget {
                       }
                     } else {
                       // Create a new post with initial content
-                      context.read<AddPostBloc>().add(PostInitialBlogEvent(
-                            title: _titleController
-                                .text, // Use the title from the controller
-                            content: content,
-                            tags: tags.split(',').map((e) => e.trim()).toList(),
-                            author: author,
-                          ));
+                      context.read<AddPostBloc>().add(
+                            PostInitialBlogEvent(
+                              title: _titleController
+                                  .text, // Use the title from the controller
+                              content: content,
+                              tags:
+                                  tags.split(',').map((e) => e.trim()).toList(),
+                              author: author,
+                              onAddBlog: (newBlog) {
+                                context
+                                    .read<BlogBloc>()
+                                    .add(AddBlogEvent(newBlog));
+                              },
+                            ),
+                          );
                     }
                   },
                   child: const Text('Submit'),

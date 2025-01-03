@@ -60,6 +60,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         if (response.statusCode == 200) {
           final data = jsonDecode(response.body);
           final token = data['data']['accessToken'];
+          
           emit(AuthAuthenticated(token));
         } else {
           emit(AuthUnauthenticated(

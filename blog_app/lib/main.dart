@@ -1,3 +1,5 @@
+import 'package:blog_app/bloc/blog_bloc.dart';
+import 'package:blog_app/bloc/upvote_bloc.dart';
 import 'package:blog_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,6 +30,10 @@ class MyApp extends StatelessWidget {
         BlocProvider(
             create: (context) =>
                 AddPostBloc()), // AddPostBloc for adding and updating posts
+        BlocProvider(create: (context) => BlogBloc()..add(LoadBlogsEvent())),
+        BlocProvider<UpvoteBloc>(
+          create: (context) => UpvoteBloc(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
