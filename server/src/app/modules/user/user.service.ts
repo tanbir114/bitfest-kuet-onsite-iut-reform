@@ -8,6 +8,10 @@ import config from '../../config';
 // Create User Into Database
 const createUserIntoDB = async (user: TUser) => {
     const newUser = await UserModel.create(user);
+    console.log(
+        '[LOG : UserService > createUserIntoDB] New User Created : ',
+        newUser,
+    );
     return newUser;
 };
 
@@ -48,6 +52,11 @@ const loginUserFromDB = async (email: string, password: string) => {
     const loggedInUser = await UserModel.findOne({
         email,
     }).select('-password');
+
+    console.log(
+        '[LOG : UserService > loginUserFromDB] Logged In User : ',
+        loggedInUser,
+    );
 
     return { accessToken, refreshToken, loggedInUser };
 };
