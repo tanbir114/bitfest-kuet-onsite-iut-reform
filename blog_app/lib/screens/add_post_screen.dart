@@ -2,16 +2,22 @@ import 'package:blog_app/bloc/blog_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../bloc/add_post_bloc.dart';
-// Import the home screen file
 
 class AddPostScreen extends StatelessWidget {
   const AddPostScreen({Key? key}) : super(key: key);
+
+  Future<String?> getUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('user_id');
+  }
 
   @override
   Widget build(BuildContext context) {
     QuillController _controller = QuillController.basic();
     TextEditingController _titleController = TextEditingController();
+    TextEditingController _tagsController = TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
@@ -32,6 +38,7 @@ class AddPostScreen extends StatelessWidget {
           if (state is AddPostInitialState) {
             _controller = QuillController.basic(); // Reset controller
             _titleController.clear(); // Clear title field
+            _tagsController.clear(); // Clear tags field
           }
         },
         builder: (context, state) {
@@ -43,7 +50,6 @@ class AddPostScreen extends StatelessWidget {
           String generatedContent = '';
           String title = '';
 
-          // If post is loaded, both contents will be available
           if (state is AddPostLoadedState) {
             originalContent = state.originalContent;
             generatedContent = state.generatedContent;
@@ -51,7 +57,6 @@ class AddPostScreen extends StatelessWidget {
             _controller = QuillController.basic()
               ..replaceText(0, 0, generatedContent, null);
 
-            // Update the title controller when the state is loaded
             _titleController.text = title;
           }
 
@@ -79,32 +84,46 @@ class AddPostScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
+                  TextField(
+                    controller: _tagsController,
+                    decoration: const InputDecoration(
+                      labelText: 'Tags (comma separated)',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
                   Align(
                     alignment: Alignment.centerRight,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         final content = _controller.document.toPlainText();
-                        final tags =
-                            'tag1, tag2'; // Replace with actual tag input
-                        final author =
-                            "6777cd02a35610db18ae569b"; // Replace with actual author ID
+                        final tags = _tagsController.text;
+                        final userId = await getUserId();
+
+                        if (userId == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content:
+                                  Text('User ID not found. Please log in.'),
+                            ),
+                          );
+                          return;
+                        }
 
                         if (state is AddPostLoadedState) {
                           final postId = state.eventId;
                           if (postId != null) {
-                            // Finalize the post with generated content
                             context
                                 .read<AddPostBloc>()
                                 .add(FinalizeGeneratedContentEvent(
                                   postId: postId,
-                                  title: _titleController
-                                      .text, // Use the title from the controller
+                                  title: _titleController.text,
                                   originalContent: originalContent,
                                   tags: tags
                                       .split(',')
                                       .map((e) => e.trim())
                                       .toList(),
-                                  author: author,
+                                  author: userId,
                                   generatedContent: generatedContent.isNotEmpty
                                       ? generatedContent
                                       : content,
@@ -115,16 +134,14 @@ class AddPostScreen extends StatelessWidget {
                                     content: Text('Post ID is missing.')));
                           }
                         } else {
-                          // Create a new post with initial content
                           context.read<AddPostBloc>().add(PostInitialBlogEvent(
-                                title: _titleController
-                                    .text, // Use the title from the controller
+                                title: _titleController.text,
                                 content: content,
                                 tags: tags
                                     .split(',')
                                     .map((e) => e.trim())
                                     .toList(),
-                                author: author,
+                                author: userId,
                                 onAddBlog: (newBlog) {
                                   context
                                       .read<BlogBloc>()
@@ -134,17 +151,14 @@ class AddPostScreen extends StatelessWidget {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            Color(0xFF2A92C9), // Set background color to blue
-                        foregroundColor:
-                            Colors.white, // Set text color to white
+                        backgroundColor: const Color(0xFF2A92C9),
+                        foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 24.0, vertical: 12.0),
                         textStyle: const TextStyle(
                             fontSize: 12.0, fontWeight: FontWeight.bold),
                         shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(8.0), // Rounded corners
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
                       child: const Text('Submit'),
@@ -153,16 +167,10 @@ class AddPostScreen extends StatelessWidget {
 
                   // Only show original content if generated content is available
                   if (generatedContent.isNotEmpty) ...[
-                    // Title field, filled with the title from the state
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    const SizedBox(height: 10),
                     TextField(
                       controller: _titleController,
                       decoration: const InputDecoration(labelText: 'Title'),
-                      onChanged: (value) {
-                        // Handle title changes if needed
-                      },
                     ),
                     const SizedBox(height: 16),
                     Text(
@@ -170,7 +178,7 @@ class AddPostScreen extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 8),
-                    Text(originalContent, style: TextStyle(fontSize: 16)),
+                    Text(originalContent, style: const TextStyle(fontSize: 16)),
                     const SizedBox(height: 16),
                   ],
                 ],
