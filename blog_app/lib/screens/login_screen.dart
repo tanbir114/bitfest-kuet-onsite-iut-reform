@@ -326,22 +326,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   : const Color.fromRGBO(44, 185, 176, 1),
               size: 16,
             ),
-            suffix: Container(
-              alignment: Alignment.center,
-              width: 24.0,
-              height: 24.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100.0),
-                color: const Color.fromRGBO(44, 185, 176, 1),
-              ),
-              child: emailController.text.isEmpty
-                  ? const Center()
-                  : const Icon(
-                      Icons.check,
-                      color: Colors.white,
-                      size: 13,
-                    ),
-            ),
+           
           ),
         ),
       ),
@@ -391,22 +376,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   : const Color.fromRGBO(44, 185, 176, 1),
               size: 16,
             ),
-            suffix: Container(
-              alignment: Alignment.center,
-              width: 24.0,
-              height: 24.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100.0),
-                color: const Color.fromRGBO(44, 185, 176, 1),
-              ),
-              child: passController.text.isEmpty
-                  ? const Center()
-                  : const Icon(
-                      Icons.check,
-                      color: Colors.white,
-                      size: 13,
-                    ),
-            ),
+            
           ),
         ),
       ),
