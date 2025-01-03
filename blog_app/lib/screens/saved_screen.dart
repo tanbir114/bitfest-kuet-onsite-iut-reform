@@ -13,7 +13,7 @@ class SavedScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Saved Blogs'),
-        backgroundColor: const Color(0xFF2A92C9),
+        backgroundColor: const Color.fromARGB(255, 33, 137, 156),
       ),
       body: BlocBuilder<SavedBlogBloc, SavedBlogState>(
         builder: (context, state) {

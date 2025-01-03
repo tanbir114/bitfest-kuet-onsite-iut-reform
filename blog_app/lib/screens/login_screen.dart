@@ -1,8 +1,10 @@
 import 'package:blog_app/bloc/auth_bloc.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -21,7 +23,6 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFF21899C),
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: const Text('Login')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: BlocListener<AuthBloc, AuthState>(
@@ -207,8 +208,8 @@ class _LoginScreenState extends State<LoginScreen> {
               fontSize: 12.0,
               color: Colors.white,
             ),
-            children: const [
-              TextSpan(
+            children: [
+              const TextSpan(
                 text: 'Don’t have an account? ',
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
@@ -216,10 +217,18 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               TextSpan(
                 text: 'Sign Up here',
-                style: TextStyle(
+                style: const TextStyle(
                   color: Color(0xFFFE9879),
                   fontWeight: FontWeight.w500,
                 ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    // Navigate to the Sign-Up page
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignUpScreen()),
+                    );
+                  },
               ),
             ],
           ),

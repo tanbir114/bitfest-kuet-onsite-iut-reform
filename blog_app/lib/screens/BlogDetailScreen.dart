@@ -13,7 +13,7 @@ class BlogDetailScreen extends StatelessWidget {
           blog['title']!,
           style: const TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color(0xFF2A92C9),
+        backgroundColor: const Color.fromARGB(255, 33, 137, 156),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -29,7 +29,7 @@ class BlogDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              'By ${blog['author']} • ${blog['date']}',
+              'By ${blog['author']} • ${blog['createdAt']}',
               style: const TextStyle(
                 fontSize: 14,
                 color: Colors.grey,
@@ -37,7 +37,8 @@ class BlogDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Text(
-              blog['content']!,
+              blog[
+                  'originalContent']!, // Use 'originalContent' for the full content
               style: const TextStyle(fontSize: 16, color: Colors.black87),
             ),
           ],

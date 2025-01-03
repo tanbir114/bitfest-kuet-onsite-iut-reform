@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:blog_app/bloc/blog_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 
@@ -10,12 +11,14 @@ class PostInitialBlogEvent extends AddPostEvent {
   final String content;
   final List<String> tags;
   final String author;
+  final Function(Map<String, String>) onAddBlog;
 
   PostInitialBlogEvent({
     required this.title,
     required this.content,
     required this.tags,
     required this.author,
+    required this.onAddBlog,
   });
 }
 
@@ -66,6 +69,12 @@ class AddPostLoadedState extends AddPostState {
   });
 }
 
+class BlogListState extends AddPostState {
+  final List<Map<String, dynamic>> blogs;
+
+  BlogListState({required this.blogs});
+}
+
 class AddPostErrorState extends AddPostState {
   final String errorMessage;
 
@@ -80,6 +89,7 @@ class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
       emit(AddPostLoadingState()); // Show loading state
 
       try {
+        print(event.author);
         final response = await http.post(
           Uri.parse('http://192.168.14.49:5001/api/story/initial'),
           headers: {'Content-Type': 'application/json'},
@@ -91,6 +101,15 @@ class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
           }),
         );
 
+        if (response.statusCode != 200) {
+          final errorResponse = jsonDecode(response.body);
+          final errorMessage =
+              errorResponse['message'] ?? 'Unknown error occurred';
+          print(errorMessage);
+          emit(AddPostErrorState(errorMessage: errorMessage));
+          return;
+        }
+
         if (response.statusCode == 200) {
           final responseData = jsonDecode(response.body);
           final generatedContent = responseData['data']['generatedContent'];
@@ -98,15 +117,20 @@ class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
           final eventId =
               responseData['data']['newStory']['_id']; // Correct event ID field
 
-          print('Generated Content: $generatedContent'); // Debugging output
-          print('Post ID: $eventId'); // Debugging output
-          print("aaaaaaaaaaaaaaaaaaaaaaaaa");
-          print(event.content);
           emit(AddPostLoadedState(
               originalContent: event.content,
               generatedContent: generatedContent,
               title: title,
               eventId: eventId));
+
+          final newBlog = {
+            "title": title,
+            "author": event.author,
+            "date": DateTime.now().toString(),
+            "content": event.content,
+          }.map((key, value) => MapEntry(key, value.toString()));
+          event.onAddBlog(newBlog);
+          
         } else {
           emit(AddPostErrorState(errorMessage: 'Failed to create post.'));
         }
@@ -139,9 +163,12 @@ class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
       }
 
       emit(AddPostLoadingState());
-      
+<<<<<<< HEAD
+
       print("xxxxxxxxxxxxxxxxxxxxx");
       print(event.originalContent);
+=======
+>>>>>>> 8c3136897d613255604ae03afd7a5be14b287855
 
       try {
         final response = await http.put(
