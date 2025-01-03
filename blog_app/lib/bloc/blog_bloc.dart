@@ -52,18 +52,37 @@ class BlogBloc extends Bloc<BlogEvent, BlogState> {
       emit(BlogLoading());
       try {
         // Fetch blogs from API
-        final response = await http.get(Uri.parse('http://192.168.14.49:5001/api/story'));
+        final response =
+            await http.get(Uri.parse('http://192.168.14.49:5001/api/story'));
+
+        print(response.statusCode);
 
         if (response.statusCode == 200) {
           final responseData = jsonDecode(response.body);
+
+          // Check if 'success' is true in the response
           if (responseData['success'] == true) {
-            final blogs = responseData['data']; // Use the 'data' field
+            // Check if 'data' is a List and handle each item properly
+            final blogs = (responseData['data'] as List).map((blog) {
+              // Ensure each value is cast to String
+              return {
+                'title': blog['title'] as String? ?? '',
+                'originalContent': blog['originalContent'] as String? ?? '',
+                'author': blog['author'] as String? ?? '',
+                'createdAt': blog['createdAt'] as String? ?? '',
+                'updatedAt': blog['updatedAt'] as String? ?? '',
+                'generatedContent': blog['generatedContent'] as String? ?? '',
+              };
+            }).toList();
+
+            print(blogs.length);
             emit(BlogLoaded(blogs));
           } else {
             emit(BlogError(responseData['message'] ?? "Failed to fetch blogs"));
           }
         } else {
-          emit(BlogError("Failed to load blogs. Status code: ${response.statusCode}"));
+          emit(BlogError(
+              "Failed to load blogs. Status code: ${response.statusCode}"));
         }
       } catch (e) {
         emit(BlogError("Error: ${e.toString()}"));

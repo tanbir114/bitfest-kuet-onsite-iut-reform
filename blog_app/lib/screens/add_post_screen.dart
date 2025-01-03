@@ -55,103 +55,126 @@ class AddPostScreen extends StatelessWidget {
             _titleController.text = title;
           }
 
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Rich Text editor using Quill
-                QuillSimpleToolbar(
-                  controller: _controller,
-                  configurations: const QuillSimpleToolbarConfigurations(),
-                ),
-                const SizedBox(height: 8),
-                Container(
-                  height: 148,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: QuillEditor.basic(
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Rich Text editor using Quill
+                  QuillSimpleToolbar(
                     controller: _controller,
-                    configurations: const QuillEditorConfigurations(),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    final content = _controller.document.toPlainText();
-                    final tags = 'tag1, tag2'; // Replace with actual tag input
-                    final author =
-                        "6777cd02a35610db18ae569b"; // Replace with actual author ID
-
-                    if (state is AddPostLoadedState) {
-                      final postId = state.eventId;
-                      if (postId != null) {
-                        // Finalize the post with generated content
-                        context
-                            .read<AddPostBloc>()
-                            .add(FinalizeGeneratedContentEvent(
-                              postId: postId,
-                              title: _titleController
-                                  .text, // Use the title from the controller
-                              originalContent: originalContent,
-                              tags:
-                                  tags.split(',').map((e) => e.trim()).toList(),
-                              author: author,
-                              generatedContent: generatedContent.isNotEmpty
-                                  ? generatedContent
-                                  : content,
-                            ));
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text('Post ID is missing.')));
-                      }
-                    } else {
-                      // Create a new post with initial content
-                      context.read<AddPostBloc>().add(
-                            PostInitialBlogEvent(
-                              title: _titleController
-                                  .text, // Use the title from the controller
-                              content: content,
-                              tags:
-                                  tags.split(',').map((e) => e.trim()).toList(),
-                              author: author,
-                              onAddBlog: (newBlog) {
-                                context
-                                    .read<BlogBloc>()
-                                    .add(AddBlogEvent(newBlog));
-                              },
-                            ),
-                          );
-                    }
-                  },
-                  child: const Text('Submit'),
-                ),
-                // Only show original content if generated content is available
-                if (generatedContent.isNotEmpty) ...[
-                  // Title field, filled with the title from the state
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: _titleController,
-                    decoration: const InputDecoration(labelText: 'Title'),
-                    onChanged: (value) {
-                      // Handle title changes if needed
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Original Content:',
-                    style: Theme.of(context).textTheme.titleLarge,
+                    configurations: const QuillSimpleToolbarConfigurations(),
                   ),
                   const SizedBox(height: 8),
-                  Text(originalContent, style: TextStyle(fontSize: 16)),
+                  Container(
+                    height: 148,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: QuillEditor.basic(
+                      controller: _controller,
+                      configurations: const QuillEditorConfigurations(),
+                    ),
+                  ),
                   const SizedBox(height: 16),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        final content = _controller.document.toPlainText();
+                        final tags =
+                            'tag1, tag2'; // Replace with actual tag input
+                        final author =
+                            "6777cd02a35610db18ae569b"; // Replace with actual author ID
+
+                        if (state is AddPostLoadedState) {
+                          final postId = state.eventId;
+                          if (postId != null) {
+                            // Finalize the post with generated content
+                            context
+                                .read<AddPostBloc>()
+                                .add(FinalizeGeneratedContentEvent(
+                                  postId: postId,
+                                  title: _titleController
+                                      .text, // Use the title from the controller
+                                  originalContent: originalContent,
+                                  tags: tags
+                                      .split(',')
+                                      .map((e) => e.trim())
+                                      .toList(),
+                                  author: author,
+                                  generatedContent: generatedContent.isNotEmpty
+                                      ? generatedContent
+                                      : content,
+                                ));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('Post ID is missing.')));
+                          }
+                        } else {
+                          // Create a new post with initial content
+                          context.read<AddPostBloc>().add(PostInitialBlogEvent(
+                                title: _titleController
+                                    .text, // Use the title from the controller
+                                content: content,
+                                tags: tags
+                                    .split(',')
+                                    .map((e) => e.trim())
+                                    .toList(),
+                                author: author,
+                                onAddBlog: (newBlog) {
+                                  context
+                                      .read<BlogBloc>()
+                                      .add(AddBlogEvent(newBlog));
+                                },
+                              ));
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            Color(0xFF2A92C9), // Set background color to blue
+                        foregroundColor:
+                            Colors.white, // Set text color to white
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24.0, vertical: 12.0),
+                        textStyle: const TextStyle(
+                            fontSize: 12.0, fontWeight: FontWeight.bold),
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(8.0), // Rounded corners
+                        ),
+                      ),
+                      child: const Text('Submit'),
+                    ),
+                  ),
+
+                  // Only show original content if generated content is available
+                  if (generatedContent.isNotEmpty) ...[
+                    // Title field, filled with the title from the state
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TextField(
+                      controller: _titleController,
+                      decoration: const InputDecoration(labelText: 'Title'),
+                      onChanged: (value) {
+                        // Handle title changes if needed
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Original Content:',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(originalContent, style: TextStyle(fontSize: 16)),
+                    const SizedBox(height: 16),
+                  ],
                 ],
-              ],
+              ),
             ),
           );
         },

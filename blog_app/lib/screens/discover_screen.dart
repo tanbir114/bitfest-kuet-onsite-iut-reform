@@ -77,7 +77,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              'By ${blog['author']} • ${blog['date']}',
+              'By ${blog['author']} • ${blog['createdAt']}',
               style: const TextStyle(
                 fontSize: 14,
                 color: Colors.grey,
@@ -85,7 +85,8 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
             ),
             const SizedBox(height: 10),
             Text(
-              blog['content']!,
+              blog[
+                  'originalContent']!, // Use the 'originalContent' for the preview
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontSize: 14, color: Colors.black87),
