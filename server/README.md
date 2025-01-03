@@ -59,3 +59,36 @@
     }
 }
 ```
+
+-   `http:localhost:5001/api/user/signup`
+
+```
+// body
+{
+    "title": "This is story title",
+    "originalContent": "This is demo story",
+    "tags": ["horror", "thriller" ],
+    "author": "6777799c6a1d5c69477d6f1b"
+}
+```
+
+```
+// Response Example
+{
+    "success": true,
+    "statusCode": 200,
+    "message": "Initial story created successfully",
+    "data": {
+        "title": "This is story title",
+        "originalContent": "This is demo story",
+        "tags": [
+            "horror",
+            "thriller"
+        ],
+        "_id": "67778397226c88c5b1c74179",
+        "createdAt": "2025-01-03T06:28:39.372Z",
+        "updatedAt": "2025-01-03T06:28:39.372Z",
+        "__v": 0
+    }
+}
+```
