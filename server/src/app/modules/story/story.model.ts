@@ -8,6 +8,11 @@ const StorySchema = new Schema<TStory>(
         originalContent: { type: String, required: true },
         tags: { type: [String], required: true },
         author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+        status: {
+            type: String,
+            enum: ['public', 'private'],
+            default: 'public',
+        },
     },
     {
         timestamps: true,
