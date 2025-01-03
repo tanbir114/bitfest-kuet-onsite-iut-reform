@@ -310,10 +310,10 @@ class _LoginScreenState extends State<LoginScreen> {
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(40),
                 borderSide: BorderSide(
-                  color: emailController.text.isEmpty
-                      ? Colors.transparent
-                      : const Color.fromRGBO(44, 185, 176, 1),
-                )),
+                    color: emailController.text.isEmpty
+                        ? Colors.transparent
+                        : const Color.fromRGBO(44, 185, 176, 1),
+                    )),
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(40),
                 borderSide: const BorderSide(
@@ -430,6 +430,15 @@ class _LoginScreenState extends State<LoginScreen> {
         ],
       ),
       child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor:
+              Colors.transparent, // Makes the background transparent
+          shadowColor: Colors.transparent, // Removes shadow
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50.0), // Matches the container
+          ),
+          padding: EdgeInsets.zero, // Removes extra padding
+        ),
         onPressed: () {
           final email = emailController.text;
           final password = passController.text;
