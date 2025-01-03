@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -13,29 +14,41 @@ class _ChatPageState extends State<ChatPage> {
   final TextEditingController _messageController = TextEditingController();
 
   bool _isListening = false;
-  bool _isLoading = false; // Add loading state
+  bool _isLoading = false; // Loading state for API responses
   List<Map<String, String>> _messages = [];
-
   ScrollController _scrollController = ScrollController();
+
+  String? _jwtToken;
 
   @override
   void initState() {
     super.initState();
+    _loadJwtToken();
+  }
+
+  Future<void> _loadJwtToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _jwtToken = prefs.getString('jwt_token');
+    });
   }
 
   void _sendMessage(String message) async {
-    if (message.isEmpty) return;
+    if (message.isEmpty || _jwtToken == null) return;
 
     // Add user message to chat
     setState(() {
       _messages.add({"sender": "user", "message": message});
-      _isLoading = true; // Set loading state to true when waiting for response
+      _isLoading = true; // Show loading indicator
     });
 
-    // Call backend to get the response (simulate ChatGPT-like behavior)
+    // Call backend with JWT token
     final response = await http.post(
       Uri.parse('http://192.168.14.49:5001/api/chat'),
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $_jwtToken', // Include JWT in headers
+      },
       body: jsonEncode({'message': message}),
     );
 
@@ -43,21 +56,27 @@ class _ChatPageState extends State<ChatPage> {
       final data = jsonDecode(response.body);
       setState(() {
         _messages.add({"sender": "bot", "message": data['data']});
-        _isLoading =
-            false; // Set loading state to false when response is received
+        _isLoading = false; // Hide loading indicator after response
       });
+    } else if (response.statusCode == 401) {
+      setState(() {
+        _messages.add({
+          "sender": "bot",
+          "message": 'Session expired. Please log in again.',
+        });
+        _isLoading = false;
+      });
+      // Handle unauthorized response by redirecting to login
+      Navigator.pushReplacementNamed(context, '/login');
     } else {
       setState(() {
         _messages.add({
           "sender": "bot",
-          "message": 'Error: Unable to get response from the backend.'
+          "message": 'Error: Unable to get a response from the server.',
         });
-        _isLoading = false; // Set loading state to false if there's an error
+        _isLoading = false;
       });
     }
-
-    // Scroll to the latest message
-    // _scrollToBottom();
   }
 
   @override
@@ -72,10 +91,8 @@ class _ChatPageState extends State<ChatPage> {
           Expanded(
             child: ListView.builder(
               controller: _scrollController,
-              reverse:
-                  true, // This ensures that new messages appear at the bottom
-              itemCount: _messages.length +
-                  (_isLoading ? 1 : 0), // Add extra for loading indicator
+              reverse: true, // Newest messages appear at the bottom
+              itemCount: _messages.length + (_isLoading ? 1 : 0),
               itemBuilder: (context, index) {
                 if (_isLoading && index == _messages.length) {
                   return _buildLoadingIndicator();
