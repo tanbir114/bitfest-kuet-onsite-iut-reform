@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { UserRoute } from '../modules/user/user.route';
 import { StoryRoute } from '../modules/story/story.route';
 import { ChatRoute } from '../modules/chat/chat.route';
+import { ImprovementRoute } from '../modules/improvement/improvement.route';
 
 const router = Router();
 
@@ -17,6 +18,10 @@ const moduleRoutes = [
     {
         path: '/chat',
         route: ChatRoute,
+    },
+    {
+        path: '/improvement',
+        route: ImprovementRoute,
     },
 ];
 

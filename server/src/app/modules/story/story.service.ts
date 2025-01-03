@@ -70,7 +70,7 @@ const createCollection = async (name: string) => {
 };
 
 const getAllStoriesFromDB = async () => {
-    const stories = await StoryModel.find();
+    const stories = await StoryModel.find().populate('author');
 
     return stories;
 };

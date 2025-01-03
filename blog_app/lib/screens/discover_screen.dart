@@ -1,29 +1,18 @@
+import 'package:blog_app/bloc/blog_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:blog_app/screens/BlogDetailScreen.dart';
 import '../bloc/upvote_bloc.dart'; // Import the UpvoteBloc
 import '../bloc/saved_blog_bloc.dart'; // Import the SavedBlogBloc
 
-class DiscoverScreen extends StatelessWidget {
-  final List<Map<String, String>> blogs = [
-    {
-      "title": "How to Boost Productivity with Simple Habits",
-      "author": "Jane Doe",
-      "date": "Jan 2, 2025",
-      "content":
-          "Discover how small changes to your daily routine can make a big impact on your productivity. This content is longer and demonstrates the 'See More' functionality in action."
-    },
-    {
-      "title": "The Future of AI in Everyday Life",
-      "author": "John Smith",
-      "date": "Dec 28, 2024",
-      "content":
-          "AI is transforming the way we live and work. Learn about the latest trends and developments in this field. With advancements in machine learning, AI is becoming an integral part of industries ranging from healthcare to finance."
-    },
-  ];
-
+class DiscoverScreen extends StatefulWidget {
   DiscoverScreen({Key? key}) : super(key: key);
 
+  @override
+  State<DiscoverScreen> createState() => _DiscoverScreenState();
+}
+
+class _DiscoverScreenState extends State<DiscoverScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,28 +23,34 @@ class DiscoverScreen extends StatelessWidget {
         ),
         backgroundColor: const Color.fromARGB(255, 33, 137, 156),
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(10),
-        itemCount: blogs.length,
-        itemBuilder: (context, index) {
-          final blog = blogs[index];
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => BlogDetailScreen(blog: blog),
-                ),
-              );
-            },
-            child: BlocProvider(
-              create: (_) => UpvoteBloc(),
-              child: BlocProvider(
-                create: (_) => SavedBlogBloc()..loadSavedBlogs(),
-                child: _buildBlogPost(blog, context),
-              ),
-            ),
-          );
+      body: BlocBuilder<BlogBloc, BlogState>(
+        builder: (context, state) {
+          if (state is BlogLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is BlogLoaded) {
+            final blogs = state.blogs;
+            return ListView.builder(
+              padding: const EdgeInsets.all(10),
+              itemCount: blogs.length,
+              itemBuilder: (context, index) {
+                final blog = blogs[index];
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BlogDetailScreen(blog: blog),
+                      ),
+                    );
+                  },
+                  child: _buildBlogPost(blog, context),
+                );
+              },
+            );
+          } else if (state is BlogError) {
+            return Center(child: Text(state.message));
+          }
+          return const Center(child: Text("No blogs available."));
         },
       ),
     );
@@ -82,7 +77,7 @@ class DiscoverScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'By ${blog['author']} • ${blog['date']}',
+              'By ${blog['author']} • ${blog['createdAt']}',
               style: const TextStyle(
                 fontSize: 14,
                 color: Colors.grey,
@@ -90,7 +85,8 @@ class DiscoverScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              blog['content']!,
+              blog[
+                  'originalContent']!, // Use the 'originalContent' for the preview
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontSize: 14, color: Colors.black87),

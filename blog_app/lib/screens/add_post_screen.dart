@@ -1,3 +1,4 @@
+import 'package:blog_app/bloc/blog_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart';
@@ -14,8 +15,16 @@ class AddPostScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+<<<<<<< HEAD
         title: const Text('Add Post'),
         backgroundColor: const Color.fromARGB(255, 33, 137, 156),
+=======
+        title: const Text(
+          'Add Post',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: const Color(0xFF2A92C9),
+>>>>>>> 8c3136897d613255604ae03afd7a5be14b287855
       ),
       body: BlocConsumer<AddPostBloc, AddPostState>(
         listener: (context, state) {
@@ -121,12 +130,22 @@ class AddPostScreen extends StatelessWidget {
                                     .map((e) => e.trim())
                                     .toList(),
                                 author: author,
+                                onAddBlog: (newBlog) {
+                                  context
+                                      .read<BlogBloc>()
+                                      .add(AddBlogEvent(newBlog));
+                                },
                               ));
                         }
                       },
                       style: ElevatedButton.styleFrom(
+<<<<<<< HEAD
                         backgroundColor: Color.fromARGB(
                             255, 33, 137, 156), // Set background color to blue
+=======
+                        backgroundColor:
+                            Color(0xFF2A92C9), // Set background color to blue
+>>>>>>> 8c3136897d613255604ae03afd7a5be14b287855
                         foregroundColor:
                             Colors.white, // Set text color to white
                         padding: const EdgeInsets.symmetric(

@@ -29,7 +29,7 @@ class BlogDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              'By ${blog['author']} • ${blog['date']}',
+              'By ${blog['author']} • ${blog['createdAt']}',
               style: const TextStyle(
                 fontSize: 14,
                 color: Colors.grey,
@@ -37,7 +37,8 @@ class BlogDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Text(
-              blog['content']!,
+              blog[
+                  'originalContent']!, // Use 'originalContent' for the full content
               style: const TextStyle(fontSize: 16, color: Colors.black87),
             ),
           ],
