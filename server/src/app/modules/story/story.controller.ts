@@ -63,6 +63,8 @@ const createCollection = catchAsync(async (req, res) => {
 });
 
 const getAllStories = catchAsync(async (req, res) => {
+    const header = req.headers;
+    console.log('[LOG : story.controller > getAllStories] Header: ', header);
     const stories = await StoryService.getAllStoriesFromDB();
 
     console.log(
