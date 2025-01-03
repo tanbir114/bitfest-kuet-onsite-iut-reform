@@ -14,12 +14,12 @@ const createImrovementPostIntoDB = async (improvement: TImprovement) => {
 };
 
 const updateImprovementPostIntoDB = async (
-    improvement: TImprovement,
+    status: string,
     improvementId: string,
 ) => {
     const updatedImprovement = await ImprovementModel.findByIdAndUpdate(
         improvementId,
-        improvement,
+        { status: status },
         {
             new: true,
         },
@@ -38,7 +38,7 @@ const updateImprovementPostIntoDB = async (
 };
 
 const getAllImprovementPostsFromDB = async () => {
-    const improvement = await ImprovementModel.find();
+    const improvement = await ImprovementModel.find().populate('author');
 
     console.log(
         '[LOG : improvement.service > getImprovementPostFromDB] Get Improvement Post: ',

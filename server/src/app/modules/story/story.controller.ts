@@ -4,6 +4,11 @@ import sendResponse from '../../utils/sendResponse';
 import { StoryService } from './story.service';
 
 const createInitialStory = catchAsync(async (req, res) => {
+    const header = req.headers;
+    console.log(
+        '[LOG : story.controller > createInitialStory] Header: ',
+        header,
+    );
     const story = req.body;
     const newStory = await StoryService.createInitialStoryIntoDB(story);
 
@@ -58,6 +63,8 @@ const createCollection = catchAsync(async (req, res) => {
 });
 
 const getAllStories = catchAsync(async (req, res) => {
+    const header = req.headers;
+    console.log('[LOG : story.controller > getAllStories] Header: ', header);
     const stories = await StoryService.getAllStoriesFromDB();
 
     console.log(

@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:blog_app/bloc/blog_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Event
 abstract class AddPostEvent {}
@@ -84,15 +84,31 @@ class AddPostErrorState extends AddPostState {
 // Bloc
 class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
   AddPostBloc() : super(AddPostInitialState()) {
+    // Helper method to fetch JWT token
+    Future<String?> _getJwtToken() async {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.getString('jwt_token'); // Retrieve the JWT token
+    }
+
     // Handle PostInitialBlogEvent (initial post creation)
     on<PostInitialBlogEvent>((event, emit) async {
       emit(AddPostLoadingState()); // Show loading state
 
       try {
+        final token = await _getJwtToken();
+        if (token == null) {
+          emit(
+              AddPostErrorState(errorMessage: 'Authentication token missing.'));
+          return;
+        }
+
         print(event.author);
         final response = await http.post(
           Uri.parse('http://192.168.14.49:5001/api/story/initial'),
-          headers: {'Content-Type': 'application/json'},
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token', // Add JWT token to headers
+          },
           body: jsonEncode({
             'title': event.title,
             'originalContent': event.content,
@@ -101,27 +117,18 @@ class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
           }),
         );
 
-        if (response.statusCode != 200) {
-          final errorResponse = jsonDecode(response.body);
-          final errorMessage =
-              errorResponse['message'] ?? 'Unknown error occurred';
-          print(errorMessage);
-          emit(AddPostErrorState(errorMessage: errorMessage));
-          return;
-        }
-
         if (response.statusCode == 200) {
           final responseData = jsonDecode(response.body);
           final generatedContent = responseData['data']['generatedContent'];
-          final title = responseData['data']['title']; // Correct title field
-          final eventId =
-              responseData['data']['newStory']['_id']; // Correct event ID field
+          final title = responseData['data']['title'];
+          final eventId = responseData['data']['newStory']['_id'];
 
           emit(AddPostLoadedState(
-              originalContent: event.content,
-              generatedContent: generatedContent,
-              title: title,
-              eventId: eventId));
+            originalContent: event.content,
+            generatedContent: generatedContent,
+            title: title,
+            eventId: eventId,
+          ));
 
           final newBlog = {
             "title": title,
@@ -130,28 +137,14 @@ class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
             "content": event.content,
           }.map((key, value) => MapEntry(key, value.toString()));
           event.onAddBlog(newBlog);
-          
         } else {
-          emit(AddPostErrorState(errorMessage: 'Failed to create post.'));
+          final errorResponse = jsonDecode(response.body);
+          final errorMessage =
+              errorResponse['message'] ?? 'Unknown error occurred';
+          emit(AddPostErrorState(errorMessage: errorMessage));
         }
       } catch (e) {
         emit(AddPostErrorState(errorMessage: e.toString()));
-      }
-    });
-
-    // Handle UpdateGeneratedContentEvent (when content is edited)
-    on<UpdateGeneratedContentEvent>((event, emit) {
-      if (state is AddPostLoadedState) {
-        final currentState = state as AddPostLoadedState;
-
-        emit(AddPostLoadedState(
-          originalContent:
-              currentState.originalContent, // Preserve original content
-          generatedContent:
-              event.generatedContent, // Update only generated content
-          title: currentState.title, // Keep the existing title
-          eventId: currentState.eventId, // Preserve the event ID
-        ));
       }
     });
 
@@ -163,18 +156,22 @@ class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
       }
 
       emit(AddPostLoadingState());
-<<<<<<< HEAD
-
-      print("xxxxxxxxxxxxxxxxxxxxx");
-      print(event.originalContent);
-=======
->>>>>>> 8c3136897d613255604ae03afd7a5be14b287855
 
       try {
+        final token = await _getJwtToken();
+        if (token == null) {
+          emit(
+              AddPostErrorState(errorMessage: 'Authentication token missing.'));
+          return;
+        }
+
         final response = await http.put(
           Uri.parse(
               'http://192.168.14.49:5001/api/story/final/${event.postId}'),
-          headers: {'Content-Type': 'application/json'},
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token', // Add JWT token to headers
+          },
           body: jsonEncode({
             'title': event.title,
             'originalContent': event.originalContent,
@@ -185,8 +182,7 @@ class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
         );
 
         if (response.statusCode == 200) {
-          // Successfully posted, reset state for a new post
-          emit(AddPostInitialState());
+          emit(AddPostInitialState()); // Reset state for a new post
         } else {
           emit(AddPostErrorState(errorMessage: 'Failed to update post.'));
         }

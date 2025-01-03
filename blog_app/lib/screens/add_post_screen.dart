@@ -15,8 +15,11 @@ class AddPostScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Post'),
-        backgroundColor: const Color.fromARGB(255, 33, 137, 156),
+        title: const Text(
+          'Add Post',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: const Color(0xFF2A92C9),
       ),
       body: BlocConsumer<AddPostBloc, AddPostState>(
         listener: (context, state) {
