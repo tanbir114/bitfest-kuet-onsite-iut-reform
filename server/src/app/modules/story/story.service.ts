@@ -30,6 +30,20 @@ const createInitialStoryIntoDB = async (story: TStory) => {
     return { newStory, generatedContent: banglishResponse.content };
 };
 
+const createFinalStoryUpdateIntoDB = async (story: TStory, storyId: string) => {
+    const updatedStory = await StoryModel.findByIdAndUpdate(storyId, story, {
+        new: true,
+    });
+
+    console.log(
+        '[LOG : story.service > createFinalStoryUpdateIntoDB] Update Final Story: ',
+        updatedStory,
+    );
+
+    return updatedStory;
+};
+
 export const StoryService = {
     createInitialStoryIntoDB,
+    createFinalStoryUpdateIntoDB,
 };

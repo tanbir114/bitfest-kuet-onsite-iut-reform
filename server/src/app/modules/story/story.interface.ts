@@ -1,7 +1,9 @@
+import { Types } from 'mongoose';
+
 export type TStory = {
     title: string;
-    content?: string;
+    generatedContent?: string;
     originalContent: string;
     tags: string[];
-    author: string;
+    author: Types.ObjectId;
 };

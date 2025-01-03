@@ -20,6 +20,28 @@ const createInitialStory = catchAsync(async (req, res) => {
     });
 });
 
+const createFinalStoryUpdate = catchAsync(async (req, res) => {
+    const { storyId } = req.params;
+    const story = req.body;
+    const updatedStory = await StoryService.createFinalStoryUpdateIntoDB(
+        story,
+        storyId,
+    );
+
+    console.log(
+        '[LOG : story.controller > createFinalStoryUpdate] Final story updated successfully',
+        updatedStory,
+    );
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Final story updated successfully',
+        data: updatedStory,
+    });
+});
+
 export const StoryController = {
     createInitialStory,
+    createFinalStoryUpdate,
 };
