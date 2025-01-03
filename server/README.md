@@ -92,3 +92,39 @@
     }
 }
 ```
+
+-   `/story/initial`
+
+```
+// body
+{
+    "title": "This is story title",
+    "originalContent": "Hackathon er question onek kothin.",
+    "tags": ["horror", "thriller" ],
+    "author": "6777799c6a1d5c69477d6f1b"
+}
+```
+
+```
+// Response Example
+{
+    "success": true,
+    "statusCode": 200,
+    "message": "Initial story created successfully",
+    "data": {
+        "newStory": {
+            "title": "This is story title",
+            "originalContent": "Hackathon er question onek kothin.",
+            "tags": [
+                "horror",
+                "thriller"
+            ],
+            "_id": "6777c96af83cf0051219081c",
+            "createdAt": "2025-01-03T11:26:34.839Z",
+            "updatedAt": "2025-01-03T11:26:34.839Z",
+            "__v": 0
+        },
+        "generatedContent": "হ্যাকাথনের প্রশ্নগুলো অনেক কঠিন।"
+    }
+}
+```

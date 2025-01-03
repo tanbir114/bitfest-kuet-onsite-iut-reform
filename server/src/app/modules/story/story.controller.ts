@@ -7,6 +7,11 @@ const createInitialStory = catchAsync(async (req, res) => {
     const story = req.body;
     const newStory = await StoryService.createInitialStoryIntoDB(story);
 
+    console.log(
+        '[LOG : story.controller > createInitialStory] Initial story created successfully',
+        newStory,
+    );
+
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
