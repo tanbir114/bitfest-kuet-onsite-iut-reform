@@ -1,7 +1,7 @@
 import { Types } from 'mongoose';
 
 export type TStory = {
-    title: string;
+    title?: string;
     generatedContent?: string;
     originalContent: string;
     tags: string[];
