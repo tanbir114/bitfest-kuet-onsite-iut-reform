@@ -64,7 +64,7 @@ class AddPostScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Container(
-                    height: 150,
+                    height: 148,
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.circular(8),
