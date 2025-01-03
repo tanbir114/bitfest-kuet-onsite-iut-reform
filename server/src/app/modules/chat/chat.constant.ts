@@ -38,7 +38,7 @@ export const getChatTemplate = (docContext: any, message: string) => ({
                 END CONTEXT
                 ------------------------------
 
-                Also few example of quizes are given below for your reference. Follow the reference pattern to generate quiz questions. At the end the end please generate a json object as response.
+                Also few example of question and answer are given below for your reference. Follow the reference pattern to generate answers. Try to generate precise and short answer in Bangla language strictly.
 
                 START EXAMPLE CHAT
                 ${examplePrompt.map((prompt: any) => `Question: ${prompt.question}\nAnswer: ${prompt.answer}`).join('\n')}

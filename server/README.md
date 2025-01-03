@@ -205,3 +205,103 @@
     ]
 }
 ```
+
+-   `/chat`
+
+```
+// body
+{
+    "message" : "কেন নিজের স্বপ্ন নিজেকেই সাজাতে হবে?"
+}
+```
+
+```
+// Response
+{
+    "success": true,
+    "statusCode": 200,
+    "message": "Chat reply generated successfully",
+    "data": "আমাদের স্বপ্ন কেবল এবং কেবল আমাদেরই। স্বপ্ন কেউ আর সাজায় না। তাই সেগুলো সাজানোর দায়িত্ব আমাদেরই নিতে হবে। আমাদের ভালো রাখা, মনের খারাপের ভার বহন, ব্যর্থতার রাত কাটিয়ে সকালের আলো দেখা, নিজের মূল্য বোঝানো এসবের দায়িত্ব আমাদেরই। কেউ এগিয়ে এসে তা করবে না।"
+}
+```
+
+-   `/improvement/create`
+
+```
+// body
+{
+    "banglaContent": "একদিন এক গ্রামে ছিল দুই বন্ধু, নাম তাদের রাজু ও সুমন। রাজু ছিল খুবই মেধাবী, আর সুমন ছিল তার থেকে একটু পিছিয়ে। তবে সুমন তার বন্ধুর কাছ থেকে অনেক কিছু শিখতো। একদিন রাজু তার বন্ধু সুমনকে বলে, দেখ, আমি তো আজকাল অনেক পড়াশোনা করি, কিন্তু তুমি কিছুই শেখো না। সুমন হেসে বলে, আমি কিছু না শিখলেও তুমি তো আমার কাছ থেকে জীবনের আসল পথ শেখতে পারো। রাজু সুমনের কথা শুনে একটু থেমে দাঁড়াল। তখন সুমন তার বন্ধু রাজুকে বলে।জীবন সব সময় বইয়ের মধ্যে পাওয়া যায় না, কখনো কখনো তা বাস্তবতা থেকেই শেখা হয়। এই কথা শুনে রাজু অনেক কিছু ভাবে, এবং সেদিন থেকে সে আরো বাস্তব জ্ঞান লাভের জন্য কাজ করতে লাগল। সে বুঝতে পারল, সঠিকভাবে শিক্ষা সব সময় বইয়ের মধ্যে থাকে না, বরং অভিজ্ঞতা থেকেও অনেক কিছু শেখা যায়।",
+    "originalContent": "Ekdin ek grame chhilo dui bondhu, naam tader Raju o Suman. Raju chhilo khubhi medhabi, ebong Suman chhilo tar theke ekto pichiye. Tobe Suman tar bondhur kach theke onek kichu shikhoto. Ekdin Raju tar bondhu Suman ke boll, Dekh, ami to aajkal onek porashona kori, kintu tumi kichui shekho na. Suman hese boll, Ami kichu na shekho na holeo tumi to amar kach theke jibon er ashol path shekhte paro. Raju Suman er kotha shune ektu thomke daral. Tokhon Suman tar bondhu Rajuke boll.Jibon shob shomoy boi er modhye pawa jay na, kokhono kokhono ta bastabota thekei shikhte hoy. Ei kotha shune Raju onek kichu bhabl, ebong sei din theke se aro bastob gyan labher jonno kaj korte laglo. Se bujhte parlo, shothikcare shikkha shob shomoy boi er modhye thake na, barong obhiggota theke o onek kichu shekha jay.",
+    "author": "6777cd02a35610db18ae569b"
+}
+```
+
+```
+// Response
+{
+    "success": true,
+    "statusCode": 201,
+    "message": "Improvement created successfully",
+    "data": {
+        "originalContent": "Ekdin ek grame chhilo dui bondhu, naam tader Raju o Suman. Raju chhilo khubhi medhabi, ebong Suman chhilo tar theke ekto pichiye. Tobe Suman tar bondhur kach theke onek kichu shikhoto. Ekdin Raju tar bondhu Suman ke boll, Dekh, ami to aajkal onek porashona kori, kintu tumi kichui shekho na. Suman hese boll, Ami kichu na shekho na holeo tumi to amar kach theke jibon er ashol path shekhte paro. Raju Suman er kotha shune ektu thomke daral. Tokhon Suman tar bondhu Rajuke boll.Jibon shob shomoy boi er modhye pawa jay na, kokhono kokhono ta bastabota thekei shikhte hoy. Ei kotha shune Raju onek kichu bhabl, ebong sei din theke se aro bastob gyan labher jonno kaj korte laglo. Se bujhte parlo, shothikcare shikkha shob shomoy boi er modhye thake na, barong obhiggota theke o onek kichu shekha jay.",
+        "banglaContent": "একদিন এক গ্রামে ছিল দুই বন্ধু, নাম তাদের রাজু ও সুমন। রাজু ছিল খুবই মেধাবী, আর সুমন ছিল তার থেকে একটু পিছিয়ে। তবে সুমন তার বন্ধুর কাছ থেকে অনেক কিছু শিখতো। একদিন রাজু তার বন্ধু সুমনকে বলে, দেখ, আমি তো আজকাল অনেক পড়াশোনা করি, কিন্তু তুমি কিছুই শেখো না। সুমন হেসে বলে, আমি কিছু না শিখলেও তুমি তো আমার কাছ থেকে জীবনের আসল পথ শেখতে পারো। রাজু সুমনের কথা শুনে একটু থেমে দাঁড়াল। তখন সুমন তার বন্ধু রাজুকে বলে।জীবন সব সময় বইয়ের মধ্যে পাওয়া যায় না, কখনো কখনো তা বাস্তবতা থেকেই শেখা হয়। এই কথা শুনে রাজু অনেক কিছু ভাবে, এবং সেদিন থেকে সে আরো বাস্তব জ্ঞান লাভের জন্য কাজ করতে লাগল। সে বুঝতে পারল, সঠিকভাবে শিক্ষা সব সময় বইয়ের মধ্যে থাকে না, বরং অভিজ্ঞতা থেকেও অনেক কিছু শেখা যায়।",
+        "author": "6777cd02a35610db18ae569b",
+        "status": "pending",
+        "_id": "67782d59029c1641457468a4",
+        "createdAt": "2025-01-03T18:32:57.295Z",
+        "updatedAt": "2025-01-03T18:32:57.295Z",
+        "__v": 0
+    }
+}
+```
+
+-   `/improvement/getAll`
+
+```
+{
+    "success": true,
+    "statusCode": 200,
+    "message": "Get all improvements successfully",
+    "data": [
+        {
+            "_id": "67782d59029c1641457468a4",
+            "originalContent": "Ekdin ek grame chhilo dui bondhu, naam tader Raju o Suman. Raju chhilo khubhi medhabi, ebong Suman chhilo tar theke ekto pichiye. Tobe Suman tar bondhur kach theke onek kichu shikhoto. Ekdin Raju tar bondhu Suman ke boll, Dekh, ami to aajkal onek porashona kori, kintu tumi kichui shekho na. Suman hese boll, Ami kichu na shekho na holeo tumi to amar kach theke jibon er ashol path shekhte paro. Raju Suman er kotha shune ektu thomke daral. Tokhon Suman tar bondhu Rajuke boll.Jibon shob shomoy boi er modhye pawa jay na, kokhono kokhono ta bastabota thekei shikhte hoy. Ei kotha shune Raju onek kichu bhabl, ebong sei din theke se aro bastob gyan labher jonno kaj korte laglo. Se bujhte parlo, shothikcare shikkha shob shomoy boi er modhye thake na, barong obhiggota theke o onek kichu shekha jay.",
+            "banglaContent": "একদিন এক গ্রামে ছিল দুই বন্ধু, নাম তাদের রাজু ও সুমন। রাজু ছিল খুবই মেধাবী, আর সুমন ছিল তার থেকে একটু পিছিয়ে। তবে সুমন তার বন্ধুর কাছ থেকে অনেক কিছু শিখতো। একদিন রাজু তার বন্ধু সুমনকে বলে, দেখ, আমি তো আজকাল অনেক পড়াশোনা করি, কিন্তু তুমি কিছুই শেখো না। সুমন হেসে বলে, আমি কিছু না শিখলেও তুমি তো আমার কাছ থেকে জীবনের আসল পথ শেখতে পারো। রাজু সুমনের কথা শুনে একটু থেমে দাঁড়াল। তখন সুমন তার বন্ধু রাজুকে বলে।জীবন সব সময় বইয়ের মধ্যে পাওয়া যায় না, কখনো কখনো তা বাস্তবতা থেকেই শেখা হয়। এই কথা শুনে রাজু অনেক কিছু ভাবে, এবং সেদিন থেকে সে আরো বাস্তব জ্ঞান লাভের জন্য কাজ করতে লাগল। সে বুঝতে পারল, সঠিকভাবে শিক্ষা সব সময় বইয়ের মধ্যে থাকে না, বরং অভিজ্ঞতা থেকেও অনেক কিছু শেখা যায়।",
+            "author": "6777cd02a35610db18ae569b",
+            "status": "pending",
+            "createdAt": "2025-01-03T18:32:57.295Z",
+            "updatedAt": "2025-01-03T18:32:57.295Z",
+            "__v": 0
+        }
+    ]
+}
+```
+
+-   `/improvement/<postid>`
+
+```
+{
+    "banglaContent": "একদিন এক গ্রামে ছিল দুই বন্ধু, নাম তাদের রাজু ও সুমন। রাজু ছিল খুবই মেধাবী, আর সুমন ছিল তার থেকে একটু পিছিয়ে। তবে সুমন তার বন্ধুর কাছ থেকে অনেক কিছু শিখতো। একদিন রাজু তার বন্ধু সুমনকে বলে, দেখ, আমি তো আজকাল অনেক পড়াশোনা করি, কিন্তু তুমি কিছুই শেখো না। সুমন হেসে বলে, আমি কিছু না শিখলেও তুমি তো আমার কাছ থেকে জীবনের আসল পথ শেখতে পারো। রাজু সুমনের কথা শুনে একটু থেমে দাঁড়াল। তখন সুমন তার বন্ধু রাজুকে বলে।জীবন সব সময় বইয়ের মধ্যে পাওয়া যায় না, কখনো কখনো তা বাস্তবতা থেকেই শেখা হয়। এই কথা শুনে রাজু অনেক কিছু ভাবে, এবং সেদিন থেকে সে আরো বাস্তব জ্ঞান লাভের জন্য কাজ করতে লাগল। সে বুঝতে পারল, সঠিকভাবে শিক্ষা সব সময় বইয়ের মধ্যে থাকে না, বরং অভিজ্ঞতা থেকেও অনেক কিছু শেখা যায়।",
+    "originalContent": "Ekdin ek grame chhilo dui bondhu, naam tader Raju o Suman. Raju chhilo khubhi medhabi, ebong Suman chhilo tar theke ekto pichiye. Tobe Suman tar bondhur kach theke onek kichu shikhoto. Ekdin Raju tar bondhu Suman ke boll, Dekh, ami to aajkal onek porashona kori, kintu tumi kichui shekho na. Suman hese boll, Ami kichu na shekho na holeo tumi to amar kach theke jibon er ashol path shekhte paro. Raju Suman er kotha shune ektu thomke daral. Tokhon Suman tar bondhu Rajuke boll.Jibon shob shomoy boi er modhye pawa jay na, kokhono kokhono ta bastabota thekei shikhte hoy. Ei kotha shune Raju onek kichu bhabl, ebong sei din theke se aro bastob gyan labher jonno kaj korte laglo. Se bujhte parlo, shothikcare shikkha shob shomoy boi er modhye thake na, barong obhiggota theke o onek kichu shekha jay.",
+    "author": "6777cd02a35610db18ae569b",
+    "status" : "approved"
+}
+```
+
+```
+{
+    "success": true,
+    "statusCode": 200,
+    "message": "Improvement updated successfully",
+    "data": {
+        "_id": "67782d59029c1641457468a4",
+        "originalContent": "Ekdin ek grame chhilo dui bondhu, naam tader Raju o Suman. Raju chhilo khubhi medhabi, ebong Suman chhilo tar theke ekto pichiye. Tobe Suman tar bondhur kach theke onek kichu shikhoto. Ekdin Raju tar bondhu Suman ke boll, Dekh, ami to aajkal onek porashona kori, kintu tumi kichui shekho na. Suman hese boll, Ami kichu na shekho na holeo tumi to amar kach theke jibon er ashol path shekhte paro. Raju Suman er kotha shune ektu thomke daral. Tokhon Suman tar bondhu Rajuke boll.Jibon shob shomoy boi er modhye pawa jay na, kokhono kokhono ta bastabota thekei shikhte hoy. Ei kotha shune Raju onek kichu bhabl, ebong sei din theke se aro bastob gyan labher jonno kaj korte laglo. Se bujhte parlo, shothikcare shikkha shob shomoy boi er modhye thake na, barong obhiggota theke o onek kichu shekha jay.",
+        "banglaContent": "একদিন এক গ্রামে ছিল দুই বন্ধু, নাম তাদের রাজু ও সুমন। রাজু ছিল খুবই মেধাবী, আর সুমন ছিল তার থেকে একটু পিছিয়ে। তবে সুমন তার বন্ধুর কাছ থেকে অনেক কিছু শিখতো। একদিন রাজু তার বন্ধু সুমনকে বলে, দেখ, আমি তো আজকাল অনেক পড়াশোনা করি, কিন্তু তুমি কিছুই শেখো না। সুমন হেসে বলে, আমি কিছু না শিখলেও তুমি তো আমার কাছ থেকে জীবনের আসল পথ শেখতে পারো। রাজু সুমনের কথা শুনে একটু থেমে দাঁড়াল। তখন সুমন তার বন্ধু রাজুকে বলে।জীবন সব সময় বইয়ের মধ্যে পাওয়া যায় না, কখনো কখনো তা বাস্তবতা থেকেই শেখা হয়। এই কথা শুনে রাজু অনেক কিছু ভাবে, এবং সেদিন থেকে সে আরো বাস্তব জ্ঞান লাভের জন্য কাজ করতে লাগল। সে বুঝতে পারল, সঠিকভাবে শিক্ষা সব সময় বইয়ের মধ্যে থাকে না, বরং অভিজ্ঞতা থেকেও অনেক কিছু শেখা যায়।",
+        "author": "6777cd02a35610db18ae569b",
+        "status": "approved",
+        "createdAt": "2025-01-03T18:32:57.295Z",
+        "updatedAt": "2025-01-03T18:40:16.319Z",
+        "__v": 0
+    }
+}
+```
