@@ -24,7 +24,7 @@ const createImprovement = catchAsync(async (req, res) => {
 const updatedImprovement = catchAsync(async (req, res) => {
     const { improvementId } = req.params;
     const improvement = await ImprovementService.updateImprovementPostIntoDB(
-        req.body,
+        req.body.status,
         improvementId,
     );
 
