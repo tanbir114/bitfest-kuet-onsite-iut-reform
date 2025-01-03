@@ -181,7 +181,14 @@
                 "tag1",
                 "tag2"
             ],
-            "author": "6777cd02a35610db18ae569b",
+            "author": {
+                "_id": "6777cd02a35610db18ae569b",
+                "role": "user",
+                "name": "Tanvir Hossain Dihan",
+                "email": "tanvirhossain20@iut-dhaka.edu",
+                "password": "$2b$12$dQ/xRrHBIx8BRaG7NjZik.0UPDvHoE..3JVzH0z7NTld7Xl2s.rTy",
+                "__v": 0
+            },,
             "createdAt": "2025-01-03T14:30:36.731Z",
             "updatedAt": "2025-01-03T14:31:56.366Z",
             "__v": 0,
@@ -195,7 +202,14 @@
                 "tag1",
                 "tag2"
             ],
-            "author": "6777cd02a35610db18ae569b",
+            "author": {
+                "_id": "6777cd02a35610db18ae569b",
+                "role": "user",
+                "name": "Tanvir Hossain Dihan",
+                "email": "tanvirhossain20@iut-dhaka.edu",
+                "password": "$2b$12$dQ/xRrHBIx8BRaG7NjZik.0UPDvHoE..3JVzH0z7NTld7Xl2s.rTy",
+                "__v": 0
+            },
             "createdAt": "2025-01-03T14:34:50.605Z",
             "updatedAt": "2025-01-03T14:35:15.928Z",
             "__v": 0,
