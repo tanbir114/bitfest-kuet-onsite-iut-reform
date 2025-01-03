@@ -1,8 +1,8 @@
+import 'package:blog_app/screens/add_post_screen.dart';
 import 'package:blog_app/screens/home_content.dart';
 import 'package:flutter/material.dart';
 import 'discover_screen.dart';
 import 'saved_screen.dart';
-import 'profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const HomeContent(), // Extract HomeScreen content into a separate widget
     DiscoverScreen(),
     const SavedScreen(),
-    const ProfileScreen(),
+    const AddPostScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -46,8 +46,8 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Saved',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: Icon(Icons.add_box),
+            label: 'New Post',
           ),
         ],
         currentIndex: _selectedIndex,
