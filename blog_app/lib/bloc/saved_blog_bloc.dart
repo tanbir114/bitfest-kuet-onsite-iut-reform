@@ -6,24 +6,27 @@ import 'package:shared_preferences/shared_preferences.dart';
 abstract class SavedBlogEvent {}
 
 class SaveBlogEvent extends SavedBlogEvent {
-  final Map<String, String> blog;
+  final Map<String, dynamic>
+      blog; // Changed to dynamic to support nested objects
 
   SaveBlogEvent({required this.blog});
 }
 
 class UnsaveBlogEvent extends SavedBlogEvent {
-  final Map<String, String> blog;
+  final Map<String, dynamic>
+      blog; // Changed to dynamic to support nested objects
 
   UnsaveBlogEvent({required this.blog});
 }
 
 // State
 class SavedBlogState {
-  final List<Map<String, String>> savedBlogs;
+  final List<Map<String, dynamic>>
+      savedBlogs; // Changed to dynamic to support nested objects
 
   SavedBlogState({this.savedBlogs = const []});
 
-  SavedBlogState copyWith({List<Map<String, String>>? savedBlogs}) {
+  SavedBlogState copyWith({List<Map<String, dynamic>>? savedBlogs}) {
     return SavedBlogState(
       savedBlogs: savedBlogs ?? this.savedBlogs,
     );
@@ -34,7 +37,7 @@ class SavedBlogState {
 class SavedBlogBloc extends Bloc<SavedBlogEvent, SavedBlogState> {
   SavedBlogBloc() : super(SavedBlogState()) {
     on<SaveBlogEvent>((event, emit) async {
-      final updatedBlogs = List<Map<String, String>>.from(state.savedBlogs);
+      final updatedBlogs = List<Map<String, dynamic>>.from(state.savedBlogs);
 
       // Check if the blog is already saved
       if (!updatedBlogs.any((blog) => blog['title'] == event.blog['title'])) {
@@ -47,7 +50,7 @@ class SavedBlogBloc extends Bloc<SavedBlogEvent, SavedBlogState> {
     });
 
     on<UnsaveBlogEvent>((event, emit) async {
-      final updatedBlogs = List<Map<String, String>>.from(state.savedBlogs);
+      final updatedBlogs = List<Map<String, dynamic>>.from(state.savedBlogs);
 
       // Remove the blog from the saved list
       updatedBlogs.removeWhere((blog) => blog['title'] == event.blog['title']);
@@ -64,8 +67,9 @@ class SavedBlogBloc extends Bloc<SavedBlogEvent, SavedBlogState> {
     String? savedBlogsString = prefs.getString('savedBlogs');
 
     if (savedBlogsString != null) {
-      List<Map<String, String>> savedBlogs = List<Map<String, String>>.from(
-        jsonDecode(savedBlogsString).map((blog) => Map<String, String>.from(blog)),
+      List<Map<String, dynamic>> savedBlogs = List<Map<String, dynamic>>.from(
+        jsonDecode(savedBlogsString)
+            .map((blog) => Map<String, dynamic>.from(blog)),
       );
       emit(state.copyWith(savedBlogs: savedBlogs));
     }

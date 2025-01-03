@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:blog_app/screens/BlogDetailScreen.dart';
 import '../bloc/upvote_bloc.dart'; // Import the UpvoteBloc
 import '../bloc/saved_blog_bloc.dart'; // Import the SavedBlogBloc
+import 'package:intl/intl.dart';
 
 class DiscoverScreen extends StatefulWidget {
   DiscoverScreen({Key? key}) : super(key: key);
@@ -13,6 +14,13 @@ class DiscoverScreen extends StatefulWidget {
 }
 
 class _DiscoverScreenState extends State<DiscoverScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Dispatch LoadBlogsEvent when the screen is initialized
+    context.read<BlogBloc>().add(LoadBlogsEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +64,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
     );
   }
 
-  Widget _buildBlogPost(Map<String, String> blog, BuildContext context) {
+  Widget _buildBlogPost(Map<String, dynamic> blog, BuildContext context) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 10),
       shape: RoundedRectangleBorder(
@@ -69,7 +77,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              blog['title']!,
+              blog['title'] ?? 'No title available',
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -77,7 +85,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              'By ${blog['author']} • ${blog['createdAt']}',
+              'By ${blog['author']} • ${_formatDate(blog['createdAt'])}',
               style: const TextStyle(
                 fontSize: 14,
                 color: Colors.grey,
@@ -85,14 +93,12 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
             ),
             const SizedBox(height: 10),
             Text(
-              blog[
-                  'originalContent']!, // Use the 'originalContent' for the preview
+              blog['generatedContent'],
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontSize: 14, color: Colors.black87),
             ),
             const SizedBox(height: 10),
-            // Upvote and Downvote Buttons
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -126,7 +132,6 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                     );
                   },
                 ),
-                // Save Button
                 BlocBuilder<SavedBlogBloc, SavedBlogState>(
                   builder: (context, state) {
                     bool isSaved = state.savedBlogs.any(
@@ -139,11 +144,11 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                       onPressed: () {
                         if (isSaved) {
                           context.read<SavedBlogBloc>().add(
-                                UnsaveBlogEvent(blog: blog), // Unsave the blog
+                                UnsaveBlogEvent(blog: blog),
                               );
                         } else {
                           context.read<SavedBlogBloc>().add(
-                                SaveBlogEvent(blog: blog), // Save the blog
+                                SaveBlogEvent(blog: blog),
                               );
                         }
                       },
@@ -157,4 +162,12 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
       ),
     );
   }
+}
+
+String _formatDate(String? createdAt) {
+  if (createdAt == null) return 'Unknown date';
+
+  final DateTime date = DateTime.parse(createdAt);
+  final DateFormat dateFormat = DateFormat('dd MMMM yyyy');
+  return dateFormat.format(date);
 }

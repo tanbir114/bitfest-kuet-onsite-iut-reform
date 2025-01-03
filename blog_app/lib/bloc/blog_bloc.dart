@@ -29,7 +29,7 @@ class BlogInitial extends BlogState {}
 class BlogLoading extends BlogState {}
 
 class BlogLoaded extends BlogState {
-  final List<Map<String, String>> blogs;
+  final List<Map<String, dynamic>> blogs;
 
   BlogLoaded(this.blogs);
 
@@ -66,14 +66,14 @@ class BlogBloc extends Bloc<BlogEvent, BlogState> {
             final blogs = (responseData['data'] as List).map((blog) {
               // Ensure each value is cast to String
               return {
-                'title': blog['title'] as String? ?? '',
-                'originalContent': blog['originalContent'] as String? ?? '',
-                'author': blog['author'] as String? ?? '',
-                'createdAt': blog['createdAt'] as String? ?? '',
-                'updatedAt': blog['updatedAt'] as String? ?? '',
-                'generatedContent': blog['generatedContent'] as String? ?? '',
+                'title': blog['title'],
+                'author': blog['author']['name'],
+                'createdAt': blog['createdAt'],
+                'generatedContent': blog['generatedContent'],
               };
             }).toList();
+
+            print(blogs);
 
             print(blogs.length);
             emit(BlogLoaded(blogs));
@@ -92,7 +92,7 @@ class BlogBloc extends Bloc<BlogEvent, BlogState> {
     on<AddBlogEvent>((event, emit) {
       if (state is BlogLoaded) {
         final currentState = state as BlogLoaded;
-        final updatedBlogs = List<Map<String, String>>.from(currentState.blogs)
+        final updatedBlogs = List<Map<String, dynamic>>.from(currentState.blogs)
           ..insert(0, event.blog); // Add new blog at the top
         emit(BlogLoaded(updatedBlogs));
       }
