@@ -42,7 +42,8 @@ const createFinalStoryUpdate = catchAsync(async (req, res) => {
 });
 
 const createCollection = catchAsync(async (req, res) => {
-    await StoryService.createCollection();
+    const { name } = req.params;
+    await StoryService.createCollection(name);
 
     console.log(
         '[LOG : story.controller > createCollection] Collection created successfully',
@@ -56,8 +57,25 @@ const createCollection = catchAsync(async (req, res) => {
     });
 });
 
+const getAllStories = catchAsync(async (req, res) => {
+    const stories = await StoryService.getAllStoriesFromDB();
+
+    console.log(
+        '[LOG : story.controller > getAllStories] All stories fetched successfully',
+        stories,
+    );
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'All stories fetched successfully',
+        data: stories,
+    });
+});
+
 export const StoryController = {
     createInitialStory,
     createFinalStoryUpdate,
     createCollection,
+    getAllStories,
 };

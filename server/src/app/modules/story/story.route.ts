@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.post('/initial', StoryController.createInitialStory);
 router.put('/final/:storyId', StoryController.createFinalStoryUpdate);
-router.get('/createCollection', StoryController.createCollection);
+router.get('/createCollection/:name', StoryController.createCollection);
+router.get('/', StoryController.getAllStories);
 
 export const StoryRoute = router;

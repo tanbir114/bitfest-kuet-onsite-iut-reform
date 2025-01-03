@@ -21,27 +21,23 @@ export const splitter = new RecursiveCharacterTextSplitter({
 });
 
 const createCollection = async (
+    name: string,
     similarityMetric: SimilarityMetric = 'dot_product',
 ) => {
     console.log('[Creating Collection]: ', config.astra_db_collection);
     // await vectorDB.dropCollection(config.astra_db_collection as string);
-    const res = await vectorDB.createCollection(
-        config.astra_db_collection as string,
-        {
-            vector: {
-                dimension: 768,
-                metric: similarityMetric,
-            },
+    const res = await vectorDB.createCollection(name, {
+        vector: {
+            dimension: 768,
+            metric: similarityMetric,
         },
-    );
+    });
 
     console.log('[Create Collection Response]: ', res);
 };
 
-const loadDataIntoDB = async (content: string) => {
-    const collection = await vectorDB.collection(
-        config.astra_db_collection as string,
-    );
+const loadDataIntoDB = async (content: string, collectionName: string) => {
+    const collection = await vectorDB.collection(collectionName);
 
     const chunks = await splitter.splitText(content);
 

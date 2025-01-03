@@ -48,7 +48,11 @@ const createFinalStoryUpdateIntoDB = async (story: TStory, storyId: string) => {
     });
 
     const data = `Banglish Content: ${updatedStory?.originalContent} Bangla Content: ${updatedStory?.generatedContent}`;
-    await VectorDatabase.loadDataIntoDB(data);
+    await VectorDatabase.loadDataIntoDB(data, 'banglish');
+    await VectorDatabase.loadDataIntoDB(
+        updatedStory?.generatedContent as string,
+        'chatInfo',
+    );
 
     console.log(
         '[LOG : story.service > createFinalStoryUpdateIntoDB] Update Final Story: ',
@@ -58,15 +62,21 @@ const createFinalStoryUpdateIntoDB = async (story: TStory, storyId: string) => {
     return updatedStory;
 };
 
-const createCollection = async () => {
+const createCollection = async (name: string) => {
     console.log('[Creating Collection]: ', 'story');
-    const res = await VectorDatabase.createCollection();
+    const res = await VectorDatabase.createCollection(name);
 
     console.log('[Create Collection Response]: ', res);
 };
 
+const getAllStoriesFromDB = async () => {
+    const stories = await StoryModel.find();
+
+    return stories;
+};
 export const StoryService = {
     createInitialStoryIntoDB,
     createFinalStoryUpdateIntoDB,
     createCollection,
+    getAllStoriesFromDB,
 };

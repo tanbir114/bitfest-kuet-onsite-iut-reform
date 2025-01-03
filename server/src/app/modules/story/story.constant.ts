@@ -43,14 +43,14 @@ const examplePrompt = [
 export const getTemplate = () => ({
     role: 'user',
     content: `
-                You are an AI assistant who can understand Banglish (Bangla language text written using english alphabets)  and convert it to fluent bangla text. Remember there can be both banglish and english text mixed in the given question. You should identify both and convert a fluent output.  
+                You are an AI assistant who can understand Banglish (Bangla language text written using english alphabets)  and convert it to fluent bangla text. Remember there can be both banglish and english text mixed in the given question. You should identify both and convert a fluent bangla language output.  
 
                 If the context doesn't include the information you need answer based on your existing knowledge and don't mention the source of your information or what the context does or does not include.
 
-                Also few example of translation are given below for your reference. Follow the reference pattern to generate bangla text. 
+                Also few example of translation are given below for your reference. Follow the reference pattern to generate  strictly bangla language text. 
 
                 START  FORMAT
-                ${examplePrompt.map((prompt) => `Banglish: ${prompt.Banglish}\nBangla: ${prompt.Bangla}`).join('\n')}
+                ${examplePrompt.map((prompt) => `Banglish: ${prompt.Banglish}\nBangla text: ${prompt.Bangla}`).join('\n')}
                 END  FORMAT
   
             `,
