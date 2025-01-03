@@ -1,0 +1,6 @@
+// NODE_ENV = development
+// PORT = 5001
+// DATABASE_URL = mongodb://localhost:27017/ph-university
+// mongodb+srv://tanvirhossain20:<db_password>@server.tblbq.mongodb.net/
+// BBCRYPT_SALT_ROUNDS = 12
+// DEFAULT_PASS=ABCDEFGH@#
