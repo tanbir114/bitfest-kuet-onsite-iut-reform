@@ -56,12 +56,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode({'email': event.email, 'password': event.password}),
         );
-        print(response.statusCode);
+
         if (response.statusCode == 200) {
           final data = jsonDecode(response.body);
-          print(data);
           final token = data['data']['accessToken'];
-          print(token);
           emit(AuthAuthenticated(token));
         } else {
           emit(AuthUnauthenticated(
@@ -77,8 +75,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthSignUp>((event, emit) async {
       emit(AuthLoading());
       try {
-        print(event.username);
-        print(event.password);
         final response = await http.post(
           Uri.parse('$baseUrl/user/signup'),
           headers: {'Content-Type': 'application/json'},
@@ -88,10 +84,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             'password': event.password
           }),
         );
-        print(response.statusCode);
         if (response.statusCode == 200) {
           final data = jsonDecode(response.body);
-          final successMessage = data['message']; // The success message
+          final successMessage = data['message'];
           emit(AuthUnauthenticated(
               message: successMessage)); // Display success message
         } else {
