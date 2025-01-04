@@ -6,6 +6,8 @@ import { useDemoRouter } from '@toolpad/core/internal';
 import logo from '../../assets/logo.jpeg';
 import { getComponent } from '../../utils/ComponentReturn';
 import { useAppSelector } from '../../redux/hook';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const ADMIN_NAVIGATION: Navigation = [
     {
@@ -14,9 +16,19 @@ const ADMIN_NAVIGATION: Navigation = [
         icon: <DashboardIcon />,
     },
     {
+        segment: 'stories',
+        title: 'Stories',
+        icon: <MenuBookIcon />,
+    },
+    {
         segment: 'improvement',
         title: 'Contribution',
         icon: <HealthAndSafetyIcon />,
+    },
+    {
+        segment: 'logout',
+        title: 'Logout',
+        icon: <LogoutIcon />,
     },
 ];
 
@@ -25,6 +37,16 @@ const USER_NAVIGATION: Navigation = [
         segment: 'dashboard',
         title: 'Dashboard',
         icon: <DashboardIcon />,
+    },
+    {
+        segment: 'stories',
+        title: 'Stories',
+        icon: <MenuBookIcon />,
+    },
+    {
+        segment: 'logout',
+        title: 'Logout',
+        icon: <LogoutIcon />,
     },
 ];
 
