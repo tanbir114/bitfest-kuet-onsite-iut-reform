@@ -42,3 +42,12 @@ export type TImprovement = {
     author: TUser;
     status?: 'pending' | 'approved' | 'rejected';
 };
+
+export type TStory = {
+    title?: string;
+    generatedContent?: string;
+    originalContent: string;
+    tags: string[];
+    author: string;
+    status?: string;
+};

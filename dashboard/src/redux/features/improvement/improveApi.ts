@@ -23,7 +23,33 @@ const improveApi = baseApi.injectEndpoints({
             },
             invalidatesTags: ['improve'],
         }),
+
+        getStoryByAuthor: builder.query({
+            query: (author: string) => {
+                return {
+                    url: `/story/${author}`,
+                    method: 'GET',
+                };
+            },
+            providesTags: ['story'],
+        }),
+
+        getImproveByAuthor: builder.query({
+            query: (author: string) => {
+                console.log(author);
+                return {
+                    url: `/improvement/getByAuthor/${author}`,
+                    method: 'GET',
+                };
+            },
+            providesTags: ['improve'],
+        }),
     }),
 });
 
-export const { useGetImproveQuery, useUpdateImproveMutation } = improveApi;
+export const {
+    useGetImproveQuery,
+    useUpdateImproveMutation,
+    useGetStoryByAuthorQuery,
+    useGetImproveByAuthorQuery,
+} = improveApi;
