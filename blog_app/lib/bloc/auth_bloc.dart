@@ -63,13 +63,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           final data = jsonDecode(response.body);
           final token = data['data']['accessToken'];
           final user = data['data']['loggedInUser'];
+          final userId = user['_id'];
 
-          // Save token using SharedPreferences
+          // Save token and user data using SharedPreferences
           final prefs = await SharedPreferences.getInstance();
           await prefs.setString('jwt_token', token);
-
-          // Save user data (if needed)
           await prefs.setString('user_data', jsonEncode(user));
+          await prefs.setString('user_id', userId); // Store user _id separately
 
           emit(AuthAuthenticated(token, user));
         } else {
@@ -95,6 +95,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             'password': event.password
           }),
         );
+
         if (response.statusCode == 200) {
           final data = jsonDecode(response.body);
           final successMessage = data['message'];
@@ -112,10 +113,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     // Handle logout event
     on<AuthLogout>((event, emit) async {
-      // Clear token from SharedPreferences
+      // Clear token and user data from SharedPreferences
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove('jwt_token');
       await prefs.remove('user_data');
+      await prefs.remove('user_id'); // Remove stored user _id
 
       emit(AuthUnauthenticated());
     });

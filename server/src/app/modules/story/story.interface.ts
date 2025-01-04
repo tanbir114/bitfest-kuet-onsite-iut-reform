@@ -6,4 +6,5 @@ export type TStory = {
     originalContent: string;
     tags: string[];
     author: Types.ObjectId;
+    status?: 'public' | 'private';
 };
