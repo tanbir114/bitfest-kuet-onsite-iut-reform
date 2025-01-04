@@ -65,39 +65,30 @@ class BlogBloc extends Bloc<BlogEvent, BlogState> {
     on<LoadBlogsEvent>((event, emit) async {
       emit(BlogLoading());
       try {
-        // Fetch blogs from API
         final response = await fetchProtectedResource();
-
-        print(response.statusCode);
-
+        print('Response status: ${response.statusCode}');
         if (response.statusCode == 200) {
           final responseData = jsonDecode(response.body);
-
-          // Check if 'success' is true in the response
-          if (responseData['success'] == true) {
-            // Check if 'data' is a List and handle each item properly
+          if (responseData['success'] == true && responseData['data'] is List) {
             final blogs = (responseData['data'] as List).map((blog) {
-              // Ensure each value is cast to String
               return {
-                'title': blog['title'],
-                'author': blog['author']['name'],
-                'createdAt': blog['createdAt'],
-                'generatedContent': blog['generatedContent'],
+                'title': blog['title'] ?? "No Title",
+                'author': blog['author']?['name'] ?? "Unknown Author",
+                'createdAt': blog['createdAt'] ?? "Unknown Date",
+                'generatedContent': blog['generatedContent'] ?? "No Content",
               };
             }).toList();
-
-            print(blogs);
-
-            print(blogs.length);
             emit(BlogLoaded(blogs));
           } else {
-            emit(BlogError(responseData['message'] ?? "Failed to fetch blogs"));
+            emit(BlogError(responseData['message'] ??
+                "Unexpected response structure or missing 'data' field."));
           }
         } else {
           emit(BlogError(
               "Failed to load blogs. Status code: ${response.statusCode}"));
         }
-      } catch (e) {
+      } catch (e, stacktrace) {
+        print('Error loading blogs: $e\n$stacktrace');
         emit(BlogError("Error: ${e.toString()}"));
       }
     });

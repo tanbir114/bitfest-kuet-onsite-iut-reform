@@ -18,6 +18,7 @@ class AddPostScreen extends StatelessWidget {
     QuillController _controller = QuillController.basic();
     TextEditingController _titleController = TextEditingController();
     TextEditingController _tagsController = TextEditingController();
+    String _status = 'public';
 
     return Scaffold(
       appBar: AppBar(
@@ -25,7 +26,7 @@ class AddPostScreen extends StatelessWidget {
           'Add Post',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color(0xFF2A92C9),
+        backgroundColor: Color.fromARGB(255, 33, 137, 156),
       ),
       body: BlocConsumer<AddPostBloc, AddPostState>(
         listener: (context, state) {
@@ -92,6 +93,28 @@ class AddPostScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
+                  DropdownButtonFormField<String>(
+                    value: _status,
+                    decoration: const InputDecoration(
+                      labelText: 'Privacy Status',
+                      border: OutlineInputBorder(),
+                    ),
+                    items: const [
+                      DropdownMenuItem(
+                        value: 'public',
+                        child: Text('Public'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'private',
+                        child: Text('Private'),
+                      ),
+                    ],
+                    onChanged: (value) {
+                      if (value != null) {
+                        _status = value;
+                      }
+                    },
+                  ),
                   Align(
                     alignment: Alignment.centerRight,
                     child: ElevatedButton(
@@ -127,6 +150,7 @@ class AddPostScreen extends StatelessWidget {
                                   generatedContent: generatedContent.isNotEmpty
                                       ? generatedContent
                                       : content,
+                                  status: _status,
                                 ));
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -147,6 +171,7 @@ class AddPostScreen extends StatelessWidget {
                                       .read<BlogBloc>()
                                       .add(AddBlogEvent(newBlog));
                                 },
+                                status: _status,
                               ));
                         }
                       },

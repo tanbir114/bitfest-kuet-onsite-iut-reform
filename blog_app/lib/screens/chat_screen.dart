@@ -83,8 +83,11 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ChatBot'),
-        backgroundColor: Colors.blueAccent,
+        title: const Text(
+          'ChatBot',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: const Color.fromARGB(255, 33, 137, 156),
       ),
       body: Column(
         children: [
@@ -119,7 +122,7 @@ class _ChatPageState extends State<ChatPage> {
           IconButton(
             icon: Icon(
               _isListening ? Icons.mic : Icons.mic_none,
-              color: Colors.blueAccent,
+              color: const Color.fromARGB(255, 33, 137, 156),
             ),
             onPressed: () {},
           ),
@@ -138,7 +141,8 @@ class _ChatPageState extends State<ChatPage> {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.send, color: Colors.blueAccent),
+            icon: const Icon(Icons.send,
+                color: Color.fromARGB(255, 33, 137, 156)),
             onPressed: () {
               _sendMessage(_messageController.text);
               _messageController.clear();
@@ -155,7 +159,8 @@ class _ChatPageState extends State<ChatPage> {
       child: Center(
         child: Text(
           '... Loading ...',
-          style: TextStyle(fontSize: 18, color: Colors.blueAccent),
+          style:
+              TextStyle(fontSize: 18, color: Color.fromARGB(255, 33, 137, 156)),
         ),
       ),
     );
@@ -178,7 +183,9 @@ class ChatMessage extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: sender == "user" ? Colors.blueAccent : Colors.grey[200],
+          color: sender == "user"
+              ? const Color.fromARGB(255, 33, 137, 156)
+              : Colors.grey[200],
           borderRadius: BorderRadius.circular(10),
         ),
         child: Text(
