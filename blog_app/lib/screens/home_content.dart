@@ -1,6 +1,7 @@
 import 'dart:async';
+import 'package:blog_app/bloc/blog_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeContent extends StatefulWidget {
@@ -12,15 +13,40 @@ class HomeContent extends StatefulWidget {
 
 class _HomeContentState extends State<HomeContent> {
   final PageController _pageController = PageController();
+  List<Map<String, dynamic>> _blogs = [];
   int _currentPage = 0;
+  List<Map<String, dynamic>> _filteredBlogs = [];
+
   List<dynamic> trendingNews = [];
   List<dynamic> recommendedNews = [];
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    context.read<BlogBloc>().add(LoadBlogsEvent());
     _loadNewsData();
     _startAutoSlide();
+    _searchController.addListener(() {
+      _filterBlogs(_searchController.text);
+    });
+  }
+
+  void _filterBlogs(String query) {
+    if (query.isEmpty) {
+      setState(() {
+        _filteredBlogs = _blogs;
+        print(_filteredBlogs.length);
+      });
+    } else {
+      setState(() {
+        _filteredBlogs = _blogs
+            .where((blog) =>
+                blog['title'].toLowerCase().contains(query.toLowerCase()) ||
+                blog['author'].toLowerCase().contains(query.toLowerCase()))
+            .toList();
+      });
+    }
   }
 
   void _loadNewsData() {
@@ -46,87 +72,112 @@ class _HomeContentState extends State<HomeContent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title:
-              const Text('Kotha Britto', style: TextStyle(color: Colors.white)),
-          backgroundColor: const Color.fromARGB(255, 33, 137, 156),
-        ),
-        body: trendingNews.isEmpty || recommendedNews.isEmpty
-            ? const Center(child: CircularProgressIndicator())
-            : SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Search Bar
-                      TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Find Interesting news',
-                          prefixIcon: const Icon(Icons.search),
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: const BorderSide(
-                                color: Color.fromARGB(255, 33, 137, 156)),
-                          ),
-                        ),
-                        onChanged: (value) {
-                          // Add search logic
-                        },
-                      ),
-                      const SizedBox(height: 20),
+      appBar: AppBar(
+        title:
+            const Text('Kotha Britto', style: TextStyle(color: Colors.white)),
+        backgroundColor: const Color.fromARGB(255, 33, 137, 156),
+      ),
+      body: BlocConsumer<BlogBloc, BlogState>(
+        listener: (context, state) {
+          if (state is BlogLoaded) {
+            setState(() {
+              _blogs = state.blogs;
+              _filteredBlogs = state.blogs; // Initialize with all blogs
+            });
+          } else if (state is BlogError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message)),
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is BlogLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is BlogLoaded) {
+            return _buildContent();
+          } else {
+            return const Center(child: Text("Failed to load blogs"));
+          }
+        },
+      ),
+    );
+  }
 
-                      // Sliding Carousel
-                      SizedBox(
-                        height: 200,
-                        child: Stack(
-                          children: [
-                            PageView.builder(
-                              controller: _pageController,
-                              itemCount: trendingNews.length,
-                              itemBuilder: (context, index) {
-                                final news = trendingNews[index];
-                                return _buildTrendingCard(news['title'],
-                                    news['articles'], news['reads']);
-                              },
-                              onPageChanged: (index) {
-                                setState(() {
-                                  _currentPage = index;
-                                });
-                              },
-                            ),
-                            Positioned(
-                              bottom: 8,
-                              left: 0,
-                              right: 0,
-                              child: Center(
-                                child: AnimatedSmoothIndicator(
-                                  activeIndex: _currentPage,
-                                  count: trendingNews.length,
-                                  effect: const WormEffect(
-                                    dotColor: Colors.white,
-                                    activeDotColor:
-                                        Color.fromARGB(255, 33, 137, 156),
-                                    radius: 4,
-                                    dotHeight: 8,
-                                    dotWidth: 8,
-                                  ),
-                                ),
+  Widget _buildContent() {
+    return trendingNews.isEmpty || recommendedNews.isEmpty
+        ? const Center(child: CircularProgressIndicator())
+        : SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Search Bar
+                  TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      hintText: 'Find Interesting news',
+                      prefixIcon: const Icon(Icons.search),
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 33, 137, 156)),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Sliding Carousel
+                  SizedBox(
+                    height: 200,
+                    child: Stack(
+                      children: [
+                        PageView.builder(
+                          controller: _pageController,
+                          itemCount: trendingNews.length,
+                          itemBuilder: (context, index) {
+                            final news = trendingNews[index];
+                            return _buildTrendingCard(
+                                news['title'], news['articles'], news['reads']);
+                          },
+                          onPageChanged: (index) {
+                            setState(() {
+                              _currentPage = index;
+                            });
+                          },
+                        ),
+                        Positioned(
+                          bottom: 8,
+                          left: 0,
+                          right: 0,
+                          child: Center(
+                            child: AnimatedSmoothIndicator(
+                              activeIndex: _currentPage,
+                              count: trendingNews.length,
+                              effect: const WormEffect(
+                                dotColor: Colors.white,
+                                activeDotColor:
+                                    Color.fromARGB(255, 33, 137, 156),
+                                radius: 4,
+                                dotHeight: 8,
+                                dotWidth: 8,
                               ),
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 20),
-
-                      // Recommendations
-                      _buildRecommendationsSection(),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ));
+                  const SizedBox(height: 20),
+
+                  // Recommendations
+                  _buildRecommendationsSection(),
+                ],
+              ),
+            ),
+          );
   }
 
   Widget _buildTrendingCard(String title, String articles, String reads) {

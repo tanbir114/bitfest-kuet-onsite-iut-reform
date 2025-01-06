@@ -1,4 +1,4 @@
-import httpStatus from 'http-status';
+import httpStatus from 'http-status/lib';
 import AppError from '../../utils/appError';
 import { TJwtPayload, TUser, TUserWithId } from './user.interface';
 import { UserModel } from './user.model';
@@ -61,7 +61,19 @@ const loginUserFromDB = async (email: string, password: string) => {
     return { accessToken, refreshToken, loggedInUser };
 };
 
+const getAllUserFromDB = async () => {
+    const users = await UserModel.find().select('-password');
+    return users;
+};
+
+const getUserByIdFromDB = async (userId: string) => {
+    const user = await UserModel.findById(userId).select('-password');
+    return user;
+};
+
 export const UserService = {
     createUserIntoDB,
     loginUserFromDB,
+    getAllUserFromDB,
+    getUserByIdFromDB,
 };

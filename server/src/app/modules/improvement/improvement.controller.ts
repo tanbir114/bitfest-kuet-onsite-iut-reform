@@ -1,4 +1,4 @@
-import httpStatus from 'http-status';
+import httpStatus from 'http-status/lib';
 import catchAsync from '../../utils/catchAsync';
 import { ImprovementService } from './improvement.service';
 import sendResponse from '../../utils/sendResponse';

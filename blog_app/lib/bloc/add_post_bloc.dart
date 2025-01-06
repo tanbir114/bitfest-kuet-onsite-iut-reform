@@ -11,6 +11,7 @@ class PostInitialBlogEvent extends AddPostEvent {
   final String content;
   final List<String> tags;
   final String author;
+  final String status; // Add the status field
   final Function(Map<String, String>) onAddBlog;
 
   PostInitialBlogEvent({
@@ -18,6 +19,7 @@ class PostInitialBlogEvent extends AddPostEvent {
     required this.content,
     required this.tags,
     required this.author,
+    required this.status, // Include the status
     required this.onAddBlog,
   });
 }
@@ -26,8 +28,10 @@ class UpdateGeneratedContentEvent extends AddPostEvent {
   final String generatedContent;
   final String originalContent;
 
-  UpdateGeneratedContentEvent(
-      {required this.originalContent, required this.generatedContent});
+  UpdateGeneratedContentEvent({
+    required this.originalContent,
+    required this.generatedContent,
+  });
 }
 
 class FinalizeGeneratedContentEvent extends AddPostEvent {
@@ -37,6 +41,7 @@ class FinalizeGeneratedContentEvent extends AddPostEvent {
   final List<String> tags;
   final String author;
   final String generatedContent;
+  final String status; // Add the status field
 
   FinalizeGeneratedContentEvent({
     required this.postId,
@@ -45,6 +50,7 @@ class FinalizeGeneratedContentEvent extends AddPostEvent {
     required this.tags,
     required this.author,
     required this.generatedContent,
+    required this.status, // Include the status
   });
 }
 
@@ -102,7 +108,6 @@ class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
           return;
         }
 
-        print(event.author);
         final response = await http.post(
           Uri.parse('http://192.168.14.49:5001/api/story/initial'),
           headers: {
@@ -114,6 +119,7 @@ class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
             'originalContent': event.content,
             'tags': event.tags,
             'author': event.author,
+            'status': event.status, // Include the status in the request
           }),
         );
 
@@ -178,6 +184,7 @@ class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
             'tags': event.tags,
             'author': event.author,
             'generatedContent': event.generatedContent,
+            'status': event.status, // Include the status in the request
           }),
         );
 

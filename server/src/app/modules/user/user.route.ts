@@ -18,4 +18,7 @@ router.post(
     UserController.loginUser,
 );
 
+router.get('/all', UserController.getAllUser);
+router.get('/:userId', UserController.getUserById);
+
 export const UserRoute = router;
