@@ -1,6 +1,10 @@
 import { banglishModel } from '../../utils/llmModels';
 import { VectorDatabase } from '../../utils/vectorDatabase';
-import { getTemplate, getTitleTemplate } from './story.constant';
+import {
+    getTagsTemplate,
+    getTemplate,
+    getTitleTemplate,
+} from './story.constant';
 import { TStory } from './story.interface';
 import { StoryModel } from './story.model';
 
@@ -16,6 +20,7 @@ const createInitialStoryIntoDB = async (story: TStory) => {
         '[LOG : story.service > createInitialStoryIntoDB] Generating Reponse from Google GenAI: ',
     );
 
+    // Content Generation
     const template = getTemplate();
 
     const banglishResponse = await banglishModel.invoke([
@@ -28,6 +33,7 @@ const createInitialStoryIntoDB = async (story: TStory) => {
         banglishResponse.content,
     );
 
+    // Title Generation
     const titleTemplate = getTitleTemplate();
 
     const titleResponse = await banglishModel.invoke([
@@ -35,10 +41,21 @@ const createInitialStoryIntoDB = async (story: TStory) => {
         newStory.originalContent,
     ]);
 
+    // Tags Generation
+    const tagTemplate = getTagsTemplate();
+
+    const tagResponse = await banglishModel.invoke([
+        tagTemplate,
+        newStory.originalContent,
+    ]);
+
+    console.log('====\n', tagResponse.content.toString().trim());
+    const tagsObject = JSON.parse(tagResponse.content.toString().trim());
     return {
         newStory,
         generatedContent: banglishResponse.content,
         title: titleResponse.content,
+        tags: tagsObject.tags,
     };
 };
 
@@ -74,6 +91,7 @@ const getAllStoriesFromDB = async () => {
 
     return stories;
 };
+
 export const StoryService = {
     createInitialStoryIntoDB,
     createFinalStoryUpdateIntoDB,
