@@ -49,11 +49,10 @@ const createInitialStoryIntoDB = async (story: TStory) => {
         newStory.originalContent,
     ]);
 
-    console.log('====\n', tagResponse.content.toString().trim());
     const tagsObject = JSON.parse(tagResponse.content.toString().trim());
     return {
         newStory,
-        generatedContent: banglishResponse.content,
+        generatedContent: banglishResponse.content.toString().trim(),
         title: titleResponse.content,
         tags: tagsObject.tags,
     };
