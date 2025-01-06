@@ -357,3 +357,108 @@ Base api: `http:localhost:5001/api/`
     }
 }
 ```
+
+-   Get all user `/user/all`
+
+```json
+{
+    "success": true,
+    "statusCode": 200,
+    "message": "All Users fetched successfully",
+    "data": [
+        {
+            "_id": "6777cd02a35610db18ae569b",
+            "role": "admin",
+            "name": "Tanvir Hossain Dihan",
+            "email": "tanvirhossain20@iut-dhaka.edu",
+            "__v": 0
+        },
+        {
+            "_id": "6777cd07e54fa456e71861d9",
+            "role": "user",
+            "name": "tanbir",
+            "email": "tanbir@gmail.com",
+            "__v": 0
+        }
+    ]
+}
+```
+
+-   Get User By Id `/user/:id` example `/user/6777cd02a35610db18ae569b`; Method: GET
+
+```json
+{
+    "success": true,
+    "statusCode": 200,
+    "message": "User fetched successfully",
+    "data": {
+        "_id": "6777cd02a35610db18ae569b",
+        "role": "admin",
+        "name": "Tanvir Hossain Dihan",
+        "email": "tanvirhossain20@iut-dhaka.edu",
+        "__v": 0
+    }
+}
+```
+
+-   Search `/search` ; Method: POST
+
+```json
+// Body
+{
+    "query": "Prakritik soundorjo amader jibon"
+}
+```
+
+```json
+// Response example.
+{
+    "success": true,
+    "statusCode": 200,
+    "message": "Search result fetched successfully",
+    "data": {
+        "authors": [
+            {
+                "_id": "6777cd07e54fa456e71861d9",
+                "role": "user",
+                "name": "tanbir",
+                "email": "tanbir@gmail.com",
+                "password": "$2b$12$tHbkVQwFC9xyhHpad36hROTFsZ2raBhi9LfMLy.Q8eJXvTnX3tKSy",
+                "__v": 0
+            }
+        ],
+        "stories": [
+            {
+                "_id": "677898cfa28af30b61f847c7",
+                "title": "প্রকৃতির সাড়া",
+                "originalContent": "Prakritik soundorjo amader jibon er ekta abicchedyo angsho. Prithibir nana prante royeche apurbo sob prakritik drishya, ja amader moner shanti ene dey. Kintu bortomane poribeshgoto biporyoyer karone ei soundorjo druto kome jachhe. Brikkho nidhon, dushon, ebong jolbayu poribortoner karone onek prakritik sthan biponno. Amader uchit ei soundorjo rakshay sochoton hoa ebong prakritik poribesh er dike monojog dewa.\n",
+                "tags": ["Nature"],
+                "author": {
+                    "_id": "6777cd07e54fa456e71861d9",
+                    "name": "tanbir"
+                },
+                "status": "public",
+                "createdAt": "2025-01-04T02:11:27.654Z",
+                "updatedAt": "2025-01-04T02:11:41.975Z",
+                "__v": 0,
+                "generatedContent": "প্রকৃতির সৌন্দর্য আমাদের জীবনের একটি অবিচ্ছেদ্য অঙ্গ। পৃথিবীর নানা প্রান্তে রয়েছে অপূর্ব সব প্রাকৃতিক দৃশ্য, যা আমাদের মনের শান্তি এনে দেয়। কিন্তু বর্তমানে পরিবেশগত বিপর্যয়ের কারণে এই সৌন্দর্য দ্রুত কমে যাচ্ছে। বৃক্ষ নিধন, দূষণ, এবং জলবায়ু পরিবর্তনের কারণে অনেক প্রাকৃতিক স্থান বিপন্ন। আমাদের উচিত এই সৌন্দর্য রক্ষায় সচেতন হওয়া এবং প্রাকৃতিক পরিবেশের দিকে মনোযোগ দেওয়া।"
+            },
+            {
+                "_id": "6778995aa28af30b61f847d2",
+                "title": "স্বাস্থ্য অমূল্য সম্পদ",
+                "originalContent": "Shastho amader amulya sampod. Eti chara jibon osomponno. Aajkal, bibhinno roger pradurbhav bere jaoway manusher shastho niye udveg o bridhi peyechhe. Tai niyomito byayam, shasthokor khabar ebong porimito ghum amader shorirer jonno ottonto gurutopurno.\n",
+                "tags": ["Health"],
+                "author": {
+                    "_id": "6777cd07e54fa456e71861d9",
+                    "name": "tanbir"
+                },
+                "status": "public",
+                "createdAt": "2025-01-04T02:13:46.397Z",
+                "updatedAt": "2025-01-04T02:14:35.210Z",
+                "__v": 0,
+                "generatedContent": "স্বাস্থ্য আমাদের অমূল্য সম্পদ। এটি ছাড়া জীবন অসম্পূর্ণ। আজকাল, বিভিন্ন রোগ প্রাদুর্ভাব বেড়ে যাওয়ায় মানুষের স্বাস্থ্য নিয়ে উদ্বেগ ও বৃদ্ধি পেয়েছে। তাই নিয়মিত ব্যায়াম, স্বাস্থ্যকর খাবার এবং পর্যাপ্ত ঘুম আমাদের শরীরের জন্য অত্যন্ত গুরুত্বপূর্ণ।"
+            }
+        ]
+    }
+}
+```
