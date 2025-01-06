@@ -1,4 +1,4 @@
-import httpStatus from 'http-status';
+import httpStatus from 'http-status/lib';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { StoryService } from './story.service';

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 import { NextFunction, Request, Response } from 'express';
-import httpStatus from 'http-status';
+import httpStatus from 'http-status/lib';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from '../config';
 import catchAsync from '../utils/catchAsync';
