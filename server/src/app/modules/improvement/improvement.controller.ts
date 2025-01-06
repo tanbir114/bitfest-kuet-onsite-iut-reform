@@ -58,8 +58,27 @@ const getAllImprovements = catchAsync(async (req, res) => {
     });
 });
 
+const getImprovementByAuthor = catchAsync(async (req, res) => {
+    const { authorId } = req.params;
+    const improvements =
+        await ImprovementService.getImprovementByAuthorId(authorId);
+
+    console.log(
+        '[LOG : improvement.controller > getImprovementByAuthor] Get all improvements by author successfully',
+        improvements,
+    );
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Get all improvements by author successfully',
+        data: improvements,
+    });
+});
+
 export const ImprovementController = {
     createImprovement,
     updatedImprovement,
     getAllImprovements,
+    getImprovementByAuthor,
 };

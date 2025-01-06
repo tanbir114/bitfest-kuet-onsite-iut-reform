@@ -54,7 +54,7 @@ const Login = () => {
                 onSubmit={handleSubmit}
                 className="flex flex-col w-full max-w-[400px] gap-6 border-2 bg-white border-[#1765C0] p-8 rounded-md mx-8 shadow-md"
             >
-                <h2 className="text-center text-2xl">Learn Sphere</h2>
+                <h2 className="text-center text-2xl">Kotha Britto</h2>
                 <TextField
                     id="outlined-basic"
                     label="Email"

@@ -48,8 +48,20 @@ const getAllImprovementPostsFromDB = async () => {
     return improvement;
 };
 
+const getImprovementByAuthorId = async (authorId: string) => {
+    const improvement = await ImprovementModel.find({ author: authorId });
+
+    console.log(
+        '[LOG : improvement.service > getImprovementByAuthorId] Get Improvement Post: ',
+        improvement,
+    );
+
+    return improvement;
+};
+
 export const ImprovementService = {
     createImrovementPostIntoDB,
     updateImprovementPostIntoDB,
     getAllImprovementPostsFromDB,
+    getImprovementByAuthorId,
 };

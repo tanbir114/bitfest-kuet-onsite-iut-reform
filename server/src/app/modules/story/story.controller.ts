@@ -80,9 +80,26 @@ const getAllStories = catchAsync(async (req, res) => {
     });
 });
 
+const getStoriesByAuthor = catchAsync(async (req, res) => {
+    const { authorId } = req.params;
+    const stories = await StoryService.getStoriesByAuthor(authorId);
+
+    console.log(
+        '[LOG : story.controller > getStoriesByAuthor] Stories fetched successfully',
+        stories,
+    );
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Stories fetched successfully',
+        data: stories,
+    });
+});
 export const StoryController = {
     createInitialStory,
     createFinalStoryUpdate,
     createCollection,
     getAllStories,
+    getStoriesByAuthor,
 };

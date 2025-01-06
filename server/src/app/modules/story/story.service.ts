@@ -91,9 +91,17 @@ const getAllStoriesFromDB = async () => {
     return stories;
 };
 
+const getStoriesByAuthor = async (authorId: string) => {
+    const stories = await StoryModel.find({ author: authorId }).populate(
+        'author',
+    );
+
+    return stories;
+};
 export const StoryService = {
     createInitialStoryIntoDB,
     createFinalStoryUpdateIntoDB,
     createCollection,
     getAllStoriesFromDB,
+    getStoriesByAuthor,
 };
